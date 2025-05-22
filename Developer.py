@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
-
+from time import strftime
 
 
 class Developer_detail:
@@ -48,7 +48,35 @@ class Developer_detail:
         Lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
 
 
+        # Home Button
+        img_Home = Image.open("sample images/home.jpg")
+        img_Home = img_Home.resize((55,55), Image.Resampling.LANCZOS)
+        self.photo_Home = ImageTk.PhotoImage(img_Home)
 
+        btt_Home=Button(Lab_title,
+                            image=self.photo_Home,
+                            padx=5,pady=5,bd=0,
+                            cursor="hand2",
+                            command=self.home,
+                            bg= "#1C1C1C",
+                            fg= "#00FF00")
+        btt_Home.place(x=0,y=0,width=55,height=55)
+
+
+        # ========Time==========#
+        time_lb=Label(Lab_title, 
+                            
+                            font= ("Monotype Corsiva", 15, "bold"), 
+                            bg= "#1C1C1C", 
+                            fg= "#00FF00" )
+
+        time_lb.place(x=1190,y=0,height=55)
+
+        def Time():
+            string = strftime('%H:%M:%S\n%p')
+            time_lb.config(text=string)
+            time_lb.after(1000, Time)
+        Time()
 
 # about 
 # help
@@ -75,7 +103,19 @@ class Developer_detail:
 
 
 
+    # Home button
+    def home(self):
+        from main import Face_Recognition_System
+        self.clear_window()                          # Clear current UI
+        self.app = Face_Recognition_System(self.root)       # Load Home UI in new window
 
+
+
+
+
+    def clear_window(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
 
 

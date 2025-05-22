@@ -54,6 +54,7 @@ class Face_Recognition_System:
                             fg= "#00FF00" )
         Lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
 
+
         # ========Time==========#
         time_lb=Label(Lab_title, 
                             
@@ -68,9 +69,6 @@ class Face_Recognition_System:
             time_lb.config(text=string)
             time_lb.after(1000, Time)
         Time()
-
-
-
 
 
 
