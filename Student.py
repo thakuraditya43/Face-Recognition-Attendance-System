@@ -13,6 +13,8 @@ class Student:
         self.root.attributes('-fullscreen', True)
         # Bind the Escape key to exit fullscreen
         self.root.bind("<Escape>", lambda event: self.toggle_fullscreen())
+        self.root.resizable(False,False)
+
 
         # ........Variables...........
         self.var_dep=StringVar()

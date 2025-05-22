@@ -1,8 +1,14 @@
 from tkinter import *
+import tkinter
 from tkinter import ttk
+from tkinter import messagebox
+import tkinter.messagebox
 from PIL import Image,ImageTk
+from time import strftime
 
 from Student import Student
+from Developer import Developer_detail
+from Help import Help_desk
 
 
 class Face_Recognition_System:
@@ -13,6 +19,7 @@ class Face_Recognition_System:
         self.root.attributes('-fullscreen', True)
         # Bind the Escape key to exit fullscreen
         self.root.bind("<Escape>", lambda event: self.toggle_fullscreen())
+        self.root.resizable(False,False)
 
 
 
@@ -47,6 +54,22 @@ class Face_Recognition_System:
                             fg= "#00FF00" )
         Lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
 
+        # ========Time==========#
+        time_lb=Label(Lab_title, 
+                            
+                            font= ("Monotype Corsiva", 15, "bold"), 
+                            bg= "#1C1C1C", 
+                            fg= "#00FF00" )
+
+        time_lb.place(x=1190,y=0,height=55)
+
+        def Time():
+            string = strftime('%H:%M:%S\n%p')
+            time_lb.config(text=string)
+            time_lb.after(1000, Time)
+        Time()
+
+
 
 
 
@@ -56,19 +79,16 @@ class Face_Recognition_System:
         img_Student = img_Student.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_Student = ImageTk.PhotoImage(img_Student)
 
-        btt_student=Button(self.root,image=self.photo_Student,
-                                command=self.student_details,relief=RAISED,cursor="hand2")
-        btt_student.place(x=100,y=200,width=200,height=200)
-
-        btt_student_1=Button(self.root,
-                                text="Student Details",
-                                command=self.student_details,
-                                cursor="hand2",
-                                relief=RAISED,
-                                font= ("Gabriola", 25, "bold"),
-                                bg= "#1C1C1C",
-                                fg= "#00FF00")
-        btt_student_1.place(x=100,y=400,width=200,height=40)
+        btt_student=Button(self.root,
+                            image=self.photo_Student,
+                            text="Student Details",
+                            compound="top",
+                            command=self.student_details,
+                            relief=RAISED,cursor="hand2",
+                            font= ("Gabriola", 20, "bold"),
+                            bg= "#1C1C1C",
+                            fg= "#00FF00")
+        btt_student.place(x=100,y=200,width=200,height=245)
 
 
 
@@ -77,16 +97,15 @@ class Face_Recognition_System:
         img_DetFace = img_DetFace.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_DetFace = ImageTk.PhotoImage(img_DetFace)
 
-        btt_DetFace=Button(self.root,image=self.photo_DetFace,relief=RAISED,cursor="hand2")
-        btt_DetFace.place(x=400,y=200,width=200,height=200)
-
         btt_DetFace=Button(self.root,
-                            text="Face Detector",
-                            cursor="hand2",
+                            image=self.photo_DetFace,
                             relief=RAISED,
-                            font= ("Gabriola", 25, "bold"),
+                            cursor="hand2",
+                            text="Face Detector",
+                            compound="top",
+                            font= ("Gabriola", 20, "bold"),
                             bg= "#1C1C1C", fg= "#00FF00")
-        btt_DetFace.place(x=400,y=400,width=200,height=40)
+        btt_DetFace.place(x=400,y=200,width=200,height=245)
 
 
 
@@ -95,36 +114,35 @@ class Face_Recognition_System:
         img_Atten = img_Atten.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_Atten = ImageTk.PhotoImage(img_Atten)
 
-        btt_Atten=Button(self.root,image=self.photo_Atten,relief=RAISED,cursor="hand2")
-        btt_Atten.place(x=700,y=200,width=200,height=200)
-
         btt_Atten=Button(self.root,
-                            text="Attendence",
-                            cursor="hand2",
-                            relief=RAISED,
-                            font= ("Gabriola", 25, "bold"),
-                            bg= "#1C1C1C",
-                            fg= "#00FF00")
-        btt_Atten.place(x=700,y=400,width=200,height=40)
+                        image=self.photo_Atten,
+                        relief=RAISED,
+                        text="Attendence",
+                        compound="top",
+                        font= ("Gabriola", 20, "bold"),
+                        bg= "#1C1C1C",
+                        fg= "#00FF00",
+                        cursor="hand2")
+        btt_Atten.place(x=700,y=200,width=200,height=245)
 
 
 
-        # Help Chat button
+        # Help button
         img_chat = Image.open("sample images/chatbot.jpeg")
         img_chat = img_chat.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_chat = ImageTk.PhotoImage(img_chat)
 
-        btt_chat=Button(self.root,image=self.photo_chat,relief=RAISED,cursor="hand2")
-        btt_chat.place(x=1000,y=200,width=200,height=200)
-
         btt_chat=Button(self.root,
-                            text="Help Desk",
-                            cursor="hand2",
-                            relief=RAISED,
-                            font= ("Gabriola", 25, "bold"),
-                            bg= "#1C1C1C",
-                            fg= "#00FF00")
-        btt_chat.place(x=1000,y=400,width=200,height=40)
+                        image=self.photo_chat,
+                        relief=RAISED,
+                        compound="top",
+                        text="Help Desk",
+                        font= ("Gabriola", 20, "bold"),
+                        bg= "#1C1C1C",
+                        fg= "#00FF00",
+                        cursor="hand2",
+                        command=self.help_d)
+        btt_chat.place(x=1000,y=200,width=200,height=245)
 
 
 
@@ -133,17 +151,16 @@ class Face_Recognition_System:
         img_train = img_train.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_train = ImageTk.PhotoImage(img_train)
 
-        btt_train=Button(self.root,image=self.photo_train,relief=RAISED,cursor="hand2")
-        btt_train.place(x=100,y=500,width=200,height=200)
-
         btt_train=Button(self.root,
-                            text="Train Data",
-                            cursor="hand2",
-                            relief=RAISED,
-                            font= ("Gabriola", 25, "bold"),
-                            bg= "#1C1C1C",
-                            fg= "#00FF00")
-        btt_train.place(x=100,y=700,width=200,height=40)
+                        image=self.photo_train,
+                        relief=RAISED,
+                        compound="top",
+                        text="Train Data",
+                        font= ("Gabriola", 20, "bold"),
+                        bg= "#1C1C1C",
+                        fg= "#00FF00",
+                        cursor="hand2")
+        btt_train.place(x=100,y=500,width=200,height=245)
 
 
 
@@ -152,17 +169,16 @@ class Face_Recognition_System:
         img_Photo = img_Photo.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_Photo = ImageTk.PhotoImage(img_Photo)
 
-        btt_Photo=Button(self.root,image=self.photo_Photo,relief=RAISED,cursor="hand2")
-        btt_Photo.place(x=400,y=500,width=200,height=200)
-
         btt_Photo=Button(self.root,
-                            text="Photo",
-                            cursor="hand2",
-                            relief=RAISED,
-                            font= ("Gabriola", 25, "bold"),
-                            bg= "#1C1C1C",
-                            fg= "#00FF00")
-        btt_Photo.place(x=400,y=700,width=200,height=40)
+                        image=self.photo_Photo,
+                        relief=RAISED,
+                        text="Photo",
+                        compound="top",
+                        font= ("Gabriola", 20, "bold"),
+                        bg= "#1C1C1C",
+                        fg= "#00FF00",
+                        cursor="hand2")
+        btt_Photo.place(x=400,y=500,width=200,height=245)
 
 
 
@@ -171,17 +187,17 @@ class Face_Recognition_System:
         img_Developer = img_Developer.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_Developer = ImageTk.PhotoImage(img_Developer)
 
-        btt_Developer=Button(self.root,image=self.photo_Developer,relief=RAISED,cursor="hand2")
-        btt_Developer.place(x=700,y=500,width=200,height=200)
-
         btt_Developer=Button(self.root,
-                                text="Developer",
-                                cursor="hand2",
-                                relief=RAISED,
-                                font= ("Gabriola", 25, "bold"), 
-                                bg= "#1C1C1C", 
-                                fg= "#00FF00")
-        btt_Developer.place(x=700,y=700,width=200,height=40)
+                            image=self.photo_Developer,
+                            text="Developer",
+                            font= ("Gabriola", 20, "bold"), 
+                            bg= "#1C1C1C",
+                            compound="top",
+                            fg= "#00FF00",
+                            relief=RAISED,
+                            cursor="hand2",
+                            command=self.developer)
+        btt_Developer.place(x=700,y=500,width=200,height=245)
 
 
 
@@ -190,17 +206,18 @@ class Face_Recognition_System:
         img_Exit = img_Exit.resize((200,200), Image.Resampling.LANCZOS)
         self.photo_Exit = ImageTk.PhotoImage(img_Exit)
 
-        btt_Exit=Button(self.root,image=self.photo_Exit,relief=RAISED,cursor="hand2")
-        btt_Exit.place(x=1000,y=500,width=200,height=200)
-
         btt_Exit=Button(self.root,
-                            text="Exit",
-                            cursor="hand2",
-                            relief=RAISED,
-                            font= ("Gabriola", 25, "bold"), 
-                            bg= "#1C1C1C", 
-                            fg= "#00FF00")
-        btt_Exit.place(x=1000,y=700,width=200,height=40)
+                        image=self.photo_Exit,
+                        relief=RAISED,
+                        cursor="hand2",
+                        text="Exit",
+                        font= ("Gabriola", 25, "bold"), 
+                        bg= "#1C1C1C", 
+                        fg= "#00FF00",
+                        compound="top",
+                        command=self.Confirm_Exit)
+        btt_Exit.place(x=1000,y=500,width=200,height=245)
+
 
 
 
@@ -218,16 +235,42 @@ class Face_Recognition_System:
 
 
 
+
+
+
+
+
+
     # -----------------------------------------------Button Functions-------------------------------------------#
     
     # Student details button
     def student_details(self):
         self.clear_window()                 # Clear current UI
-        self.app = Student(self.root)       # Load Student UI in the same window
+        self.app = Student(self.root)       # Load Student UI in new window
 
 
 
+    # Developer button
+    def developer(self):
+        self.clear_window()                          # Clear current UI
+        self.app = Developer_detail(self.root)       # Load Developer UI in new window
 
+    # Help button
+    def help_d(self):
+        self.clear_window()                          # Clear current UI
+        self.app = Help_desk(self.root)       # Load Help UI in new window
+
+
+
+    # Exit Button
+    def Confirm_Exit(self):
+        confirm_exit = tkinter.messagebox.askyesno(
+            "Face Recognition Attendance System",
+            "Hope you had a smooth session!\nWould you like to exit now?")
+        if confirm_exit:
+            self.root.destroy()
+        else:
+            return
 
 
 
