@@ -104,7 +104,7 @@ class Student:
 
 
         # Left lable frame
-        left_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"))
+        left_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
         left_frame.place(x=10,y=10,width=600,height=520)
 
         img_leftF = Image.open("sample images/student_detail2.jpg")
@@ -253,7 +253,7 @@ class Student:
 
 
         # Right lable frame
-        right_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"))
+        right_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
         right_frame.place(x=640,y=10,width=600,height=520)
 
         img_rightF = Image.open("sample images/btnStudent.png")

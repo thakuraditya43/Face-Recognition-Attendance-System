@@ -1,7 +1,7 @@
 from tkinter import *
-import tkinter
+# import tkinter
 from tkinter import ttk
-from tkinter import messagebox
+# from tkinter import messagebox
 import tkinter.messagebox
 from PIL import Image,ImageTk
 from time import strftime
@@ -72,6 +72,9 @@ class Face_Recognition_System:
 
 
 
+
+    # -----------------------------------------------Creating Buttons-------------------------------------------#
+
         # Student details button
         img_Student = Image.open("sample images/student.webp")
         img_Student = img_Student.resize((200,200), Image.Resampling.LANCZOS)
@@ -126,12 +129,12 @@ class Face_Recognition_System:
 
 
         # Help button
-        img_chat = Image.open("sample images/chatbot.jpeg")
-        img_chat = img_chat.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_chat = ImageTk.PhotoImage(img_chat)
+        img_help = Image.open("sample images/help.jpg")
+        img_help = img_help.resize((200,200), Image.Resampling.LANCZOS)
+        self.photo_help = ImageTk.PhotoImage(img_help)
 
-        btt_chat=Button(self.root,
-                        image=self.photo_chat,
+        btt_help=Button(self.root,
+                        image=self.photo_help,
                         relief=RAISED,
                         compound="top",
                         text="Help Desk",
@@ -140,7 +143,7 @@ class Face_Recognition_System:
                         fg= "#00FF00",
                         cursor="hand2",
                         command=self.help_d)
-        btt_chat.place(x=1000,y=200,width=200,height=245)
+        btt_help.place(x=1000,y=200,width=200,height=245)
 
 
 
@@ -187,7 +190,7 @@ class Face_Recognition_System:
 
         btt_Developer=Button(self.root,
                             image=self.photo_Developer,
-                            text="Developer",
+                            text="Developer Section",
                             font= ("Gabriola", 20, "bold"), 
                             bg= "#1C1C1C",
                             compound="top",
@@ -233,12 +236,6 @@ class Face_Recognition_System:
 
 
 
-
-
-
-
-
-
     # -----------------------------------------------Button Functions-------------------------------------------#
     
     # Student details button
@@ -262,7 +259,7 @@ class Face_Recognition_System:
 
     # Exit Button
     def Confirm_Exit(self):
-        confirm_exit = tkinter.messagebox.askyesno(
+        confirm_exit = tkinter.messagebox.askyesnocancel(
             "Face Recognition Attendance System",
             "Hope you had a smooth session!\nWould you like to exit now?")
         if confirm_exit:
