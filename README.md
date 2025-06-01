@@ -10,7 +10,7 @@ Attendance data can also be exported to CSV files for reporting.
 ## 👥 Team
 
 - Akarsh Kumar  
-- [Member 2 Name]  
+- Aditya kumar 814 
 - [Member 3 Name]  
 - [Member 4 Name]  
 - [Member 5 Name]
