@@ -75,6 +75,7 @@ class Student:
                             cursor="hand2",
                             command=self.home,
                             bg= "#1C1C1C",
+                            activebackground="#1C1C1C",
                             fg= "#00FF00")
         btt_Home.place(x=0,y=0,width=55,height=55)
 
@@ -98,14 +99,14 @@ class Student:
 
 
 
-        # Fram
-        main_frame = Frame(self.root,bd=3)
-        main_frame.place(x=10,y=180,width=1260,height=540)
+        # # Fram
+        # main_frame = Frame(self.root,bd=3)
+        # main_frame.place(x=10,y=180,width=1260,height=540)
 
 
         # Left lable frame
-        left_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        left_frame.place(x=10,y=10,width=600,height=520)
+        left_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
+        left_frame.place(x=20,y=190,width=600,height=520)
 
         img_leftF = Image.open("sample images/student_detail2.jpg")
         img_leftF = img_leftF.resize((580,130), Image.Resampling.LANCZOS)
@@ -164,7 +165,7 @@ class Student:
         StudentID_lable=Label(Class_student_frame,text="StudentID:",font=("Times New Roman",15,"bold"),bg="white")
         StudentID_lable.grid(row=0,column=0,pady=3,sticky=W)
 
-        StudentID_entry=ttk.Entry(Class_student_frame,textvariable=self.var_std_id,width=15,font=("Times New Roman",12))
+        StudentID_entry=ttk.Entry(Class_student_frame,textvariable=self.var_std_id,width=15,font=("Times New Roman",12),style="")
         StudentID_entry.grid(row=0,column=1,padx=3,pady=3,sticky=W)
 
         # Student_Name lable & Entry
@@ -253,8 +254,8 @@ class Student:
 
 
         # Right lable frame
-        right_frame=LabelFrame(main_frame,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        right_frame.place(x=640,y=10,width=600,height=520)
+        right_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
+        right_frame.place(x=650,y=190,width=600,height=520)
 
         img_rightF = Image.open("sample images/btnStudent.png")
         img_rightF = img_rightF.resize((580,110), Image.Resampling.LANCZOS)

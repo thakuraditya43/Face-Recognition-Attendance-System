@@ -49,7 +49,7 @@ class Face_Recognition_System:
         # title
         Lab_title=Label(self.root, 
                             text="Face Recognition for Secure Attendance Management",
-                            font= ("Monotype Corsiva", 40, "bold"), 
+                            font= ("Monotype Corsiva", 38, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
         Lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
@@ -65,11 +65,26 @@ class Face_Recognition_System:
         time_lb.place(x=1190,y=0,height=55)
 
         def Time():
-            string = strftime('%H:%M:%S\n%p')
+            string = strftime('%I:%M:%S\n%p')
             time_lb.config(text=string)
             time_lb.after(1000, Time)
         Time()
 
+
+        # ========Date==========#
+        date_lb=Label(Lab_title, 
+                            
+                            font= ("Monotype Corsiva", 15, "bold"), 
+                            bg= "#1C1C1C", 
+                            fg= "#00FF00" )
+
+        date_lb.place(x=0,y=0,height=55)
+
+        def date():
+            string = strftime('%A\n%d-%m-%Y')
+            date_lb.config(text=string)
+            # date_lb.after(1000, Time)
+        date()
 
 
 
