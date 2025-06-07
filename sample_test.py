@@ -115,4 +115,3 @@
 # entry.place(x=100,y=500)
 
 # root.mainloop()
-

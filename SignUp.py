@@ -4,7 +4,7 @@ from PIL import Image,ImageTk
 from tkinter import messagebox
 import mysql.connector
 
-from IITP_Login import Log_in
+from Login import Log_in
 
 
 """
@@ -68,7 +68,7 @@ the new password is saved back to the same `registration` table.
 class Registration:
     def __init__(self, root):
         self.root = root
-        # self.root.config(bg="#000208")                error in this due to mixing tkinter and customkinter
+        # self.root.config(bg="#000208")                    # due to opens in same windows it is uneffective
         self.root.title("Face Recognition System")
         self.root.state('zoomed')
         
