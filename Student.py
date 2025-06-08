@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
+from tkcalendar import DateEntry
 from tkinter import messagebox
 import mysql.connector
 
@@ -124,19 +125,21 @@ class Student:
         dep_lable=Label(curr_course_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
         dep_lable.grid(row=0,column=0,padx=5,sticky=W)
 
-        dep_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_dep,font=("Times New Roman",12),width=14,state="readonly")
-        dep_combo["values"]=("Setect Department","B.Sc.CSDA","BBA")
-        dep_combo.current(0)
-        dep_combo.grid(row=0,column=1,padx=2,pady=3,sticky=W)
+        self.dep_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_dep,font=("Times New Roman",12),width=14,state="readonly")
+        self.dep_combo["values"]=("Setect Department","Computer Science","Management")
+        self.dep_combo.current(0)
+        # Bind the department combobox selection to a function
+        self.dep_combo.bind("<<ComboboxSelected>>", self.update_course_options)
+        self.dep_combo.grid(row=0,column=1,padx=2,pady=3,sticky=W)
 
         # Course lable & combobox
         course_lable=Label(curr_course_frame,text="Course:",font=("Times New Roman",15,"bold"),bg="white")
         course_lable.grid(row=0,column=2,padx=5,sticky=W)
 
-        course_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_course,font=("Times New Roman",12),width=14,state="readonly")
-        course_combo["values"]=("Setect Course","A","B","C")
-        course_combo.current(0)
-        course_combo.grid(row=0,column=3,padx=2,pady=3,sticky=W)
+        self.course_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_course,font=("Times New Roman",12),width=14,state="readonly")
+        self.course_combo["values"]=("Setect Course","","","")
+        self.course_combo.current(0)
+        self.course_combo.grid(row=0,column=3,padx=2,pady=3,sticky=W)
 
         # year lable & combobox
         year_lable=Label(curr_course_frame,text="Addmission Year:",font=("Times New Roman",15,"bold"),bg="white")
@@ -176,11 +179,16 @@ class Student:
         StudentName_entry.grid(row=0,column=3,padx=3,pady=3,sticky=W)
 
         # class division lable & Entry
-        class_batch_lable=Label(Class_student_frame,text="Batch:",font=("Times New Roman",15,"bold"),bg="white")
-        class_batch_lable.grid(row=1,column=0,pady=3,sticky=W)
+        batch_lable=Label(Class_student_frame,text="Batch:",font=("Times New Roman",15,"bold"),bg="white")
+        batch_lable.grid(row=1,column=0,pady=3,sticky=W)
 
-        class_batch_entry=ttk.Entry(Class_student_frame,width=15,textvariable=self.var_batch,font=("Times New Roman",12))
-        class_batch_entry.grid(row=1,column=1,padx=3,pady=3,sticky=W)
+        batch_combo=ttk.Combobox(Class_student_frame,width=13,
+                                    textvariable=self.var_batch,
+                                    font=("Times New Roman",12),
+                                    state="readonly")
+        batch_combo["values"]=("Setect Batch","1","2")
+        batch_combo.current(0)
+        batch_combo.grid(row=1,column=1,padx=3,pady=3,sticky=W)
 
         # Roll No lable & Entry
         roll_lable=Label(Class_student_frame,text="Roll No:",font=("Times New Roman",15,"bold"),bg="white")
@@ -193,7 +201,7 @@ class Student:
         gen_lable=Label(Class_student_frame,text="Gender:",font=("Times New Roman",15,"bold"),bg="white")
         gen_lable.grid(row=2,column=0,pady=3,sticky=W)
 
-        gen_combo=ttk.Combobox(Class_student_frame,textvariable=self.var_gender,font=("Times New Roman",12),width=13,state="readonly")
+        gen_combo=ttk.Combobox(Class_student_frame,textvariable=self.var_gender,font=("Times New Roman",12),width=13,state="readonly",background='darkblue')
         gen_combo["values"]=("Setect Gender","Male","Female","Others")
         gen_combo.current(0)
         gen_combo.grid(row=2,column=1,padx=3,pady=3,sticky=W)
@@ -205,7 +213,7 @@ class Student:
         dob_lable=Label(Class_student_frame,text="DOB:",font=("Times New Roman",15,"bold"),bg="white")
         dob_lable.grid(row=2,column=2,pady=3,sticky=W)
 
-        dob_entry=ttk.Entry(Class_student_frame,width=15,textvariable=self.var_dob,font=("Times New Roman",12))
+        dob_entry=DateEntry(Class_student_frame,width=13,textvariable=self.var_dob,font=("Times New Roman",12),state="readonly",date_pattern='dd-mm-yyyy')
         dob_entry.grid(row=2,column=3,padx=3,pady=3,sticky=W)
 
         # email lable & Entry
@@ -242,7 +250,8 @@ class Student:
         del_button=ttk.Button(left_frame,text="Delete",width=19,style="CustomL.TButton")
         del_button.place(x=299,y=455)
 
-        rest_button=ttk.Button(left_frame,text="Rest",width=19,style="CustomL.TButton")
+        rest_button=ttk.Button(left_frame,text="Rest",width=19,style="CustomL.TButton",
+                                command=self.reset_data)
         rest_button.place(x=445,y=455)
 
         take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
@@ -344,15 +353,6 @@ class Student:
         self.student_table.pack(fill=BOTH,expand=1)
 
 
-    def toggle_fullscreen(self):
-        """Toggle between fullscreen and maximized mode"""
-        if self.root.attributes('-fullscreen'):  # If currently fullscreen
-            self.root.attributes('-fullscreen', False)  # Exit fullscreen
-            self.root.state('zoomed')  # Maximize window to fit screen
-        else:
-            self.root.attributes('-fullscreen', True)  # Go back to fullscreen
-
-
 
     # ==============================================================================================================#
     # ---------------------------------------Funtion Declaration-----------------------------------------------------------#
@@ -387,9 +387,49 @@ class Student:
 
 
 
+    def update_course_options(self, event=None):
+        """
+        Updates the course combobox options based on the selected department.
+        """
+        selected_department = self.var_dep.get()
+        if selected_department == "Computer Science":
+            self.course_combo["values"] = ("Select Course",
+                                            "B.Sc.(Hons.):CSDA",
+                                            "B.Sc.(Hons.):AICS",
+                                            "B.S.:CSDA",
+                                            "B.S.:AICS",
+                                            "M.S.:CSDA",
+                                            "M.S.:AICS",
+                                            "B.S.-M.S.:CSDA",
+                                            "B.S.-M.S.:AICS",
+                                            )
+        elif selected_department == "Management":
+            self.course_combo["values"] = ("Select Course", "BBA", "MBA", "BBA + MBA")
+        else:
+            self.course_combo["values"] = ("Select Course",) # Default for "Select Department" or unknown
+        self.var_course.set("Select Course") # Reset the course selection to default
 
 
 
+
+
+    def reset_data(self):
+        
+        self.var_dep.set( "Setect Department"),
+        self.var_course.set( "Setect Course"),
+        self.var_year.set( "Setect Year"),
+        self.var_sem.set( "Setect Semester"),
+        self.var_std_id.set( ""),
+        self.var_std_name.set( ""),
+        self.var_batch.set( ""),
+        self.var_roll.set( ""),
+        self.var_gender.set( "Setect Gender"),
+        # self.var_dob.set(""),
+        self.var_email.set( ""),
+        self.var_phn.set( ""),
+        self.var_radio.set(""),
+        
+        
 
 
 
@@ -404,6 +444,15 @@ class Student:
         self.app = Face_Recognition_System(self.root)       # Load Home UI in new window
 
 
+
+
+    def toggle_fullscreen(self):
+        """Toggle between fullscreen and maximized mode"""
+        if self.root.attributes('-fullscreen'):  # If currently fullscreen
+            self.root.attributes('-fullscreen', False)  # Exit fullscreen
+            self.root.state('zoomed')  # Maximize window to fit screen
+        else:
+            self.root.attributes('-fullscreen', True)  # Go back to fullscreen
 
 
 
