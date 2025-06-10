@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
@@ -20,15 +20,15 @@ class Attendance:
 
 
         # ........Variables...........
-        self.std_id_var=StringVar()
-        self.std_name_var=StringVar()
-        self.dep_var=StringVar()
-        self.course_var=StringVar()
-        self.sem_var=StringVar()
-        self.batch_var=StringVar()
-        self.date_var=StringVar()
-        self.time_var=StringVar()
-        self.attendance_var=StringVar()
+        self.std_id_var=tk.StringVar()
+        self.std_name_var=tk.StringVar()
+        self.dep_var=tk.StringVar()
+        self.course_var=tk.StringVar()
+        self.sem_var=tk.StringVar()
+        self.batch_var=tk.StringVar()
+        self.date_var=tk.StringVar()
+        self.time_var=tk.StringVar()
+        self.attendance_var=tk.StringVar()
 
 
         # Load and Display bg img
@@ -37,7 +37,7 @@ class Attendance:
                                     Image.Resampling.LANCZOS)
         self.photo_bg = ImageTk.PhotoImage(img_bg)
 
-        bg_lbl = Label(self.root, image=self.photo_bg)
+        bg_lbl = tk.Label(self.root, image=self.photo_bg)
         bg_lbl.place(x=0, y=0, width=self.root.winfo_screenwidth(), 
                         height=self.root.winfo_screenheight())  # Full screen
 
@@ -48,19 +48,19 @@ class Attendance:
         img_logo = img_logo.resize((500, 105), Image.Resampling.LANCZOS)
         self.photo_logo = ImageTk.PhotoImage(img_logo)
 
-        l_lbl = Label(self.root, image=self.photo_logo, bg="#D3D3D3")
+        l_lbl = tk.Label(self.root, image=self.photo_logo, bg="#D3D3D3")
         l_lbl.place(x=0, y=5, width=self.root.winfo_screenwidth(), height=105)  # Full width
         l_lbl.config(anchor="center")   # Make the logo centered
 
 
 
         # title
-        Lab_title=Label(self.root, 
+        Lbl_title=tk.Label(self.root, 
                             text="Attendance Management System",
-                            font= ("Monotype Corsiva", 35, "bold"), 
+                            font= ("Monotype Corsiva", 35, "bold") if "Monotype Corsiva" in tk.font.families() else ("Times New Roman", 35, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
-        Lab_title.place(x=0, y=115, height=60, width=self.root.winfo_screenwidth())
+        Lbl_title.place(x=0, y=115, height=60, width=self.root.winfo_screenwidth())
 
 
         # Home Button
@@ -68,7 +68,7 @@ class Attendance:
         img_Home = img_Home.resize((55,55), Image.Resampling.LANCZOS)
         self.photo_Home = ImageTk.PhotoImage(img_Home)
 
-        btt_Home=Button(Lab_title,
+        btt_Home=tk.Button(Lbl_title,
                             image=self.photo_Home,
                             padx=5,pady=5,bd=0,
                             cursor="hand2",
@@ -80,9 +80,9 @@ class Attendance:
 
 
         # ========Time==========#
-        time_lb=Label(Lab_title, 
+        time_lb=tk.Label(Lbl_title, 
                             
-                            font= ("Monotype Corsiva", 15, "bold"), 
+                            font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tk.font.families() else ("Times New Roman", 15, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
@@ -103,53 +103,53 @@ class Attendance:
 
 
 
-        # Left lable frame
-        left_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Student Attendance Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        left_frame.place(x=20,y=200,width=600,height=520)
+        # Left label frame
+        left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Attendance Details",font=("Times New Roman",20,"bold"),labelanchor="n")
+        left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.65,anchor="center")
 
         img_leftF = Image.open("sample images/black.png")
         img_leftF = img_leftF.resize((580,130), Image.Resampling.LANCZOS)
         self.photo_leftF = ImageTk.PhotoImage(img_leftF)
 
-        img_leftF_lbl = Label(left_frame, image=self.photo_leftF)
+        img_leftF_lbl = tk.Label(left_frame, image=self.photo_leftF)
         img_leftF_lbl.place(x=10, y=0, width=580, height=130)
 
 
 
 
-        # Class Student Information lable frame
-        Class_student_frame=Frame(left_frame,bd=2,bg="white",
-                                    relief=RIDGE,
+        # Class Student Information label frame
+        Class_student_frame=tk.Frame(left_frame,bd=2,bg="white",
+                                    relief="ridge",
                                     # text="Class Student Information",
                                     # font=("Times New Roman",15,"bold")
                                     )
         Class_student_frame.place(x=7,y=150,width=580,height=290)
 
-        # StudentId lable & Entry
-        StudentID_lable=Label(Class_student_frame,
+        # StudentId label & Entry
+        StudentID_label=tk.Label(Class_student_frame,
                                 text="StudentID:",
                                 font=("Times New Roman",15,"bold"),bg="white")
-        StudentID_lable.grid(row=0,column=0,pady=5,padx=3,sticky=W)
+        StudentID_label.grid(row=0,column=0,pady=5,padx=3,sticky="W")
 
         StudentID_entry=ttk.Entry(Class_student_frame,
                                     textvariable=self.std_id_var,
                                     width=15,font=("Times New Roman",12),style="")
-        StudentID_entry.grid(row=0,column=1,padx=3,pady=5,sticky=W)
+        StudentID_entry.grid(row=0,column=1,padx=3,pady=5,sticky="w")
 
-        # Student_Name lable & Entry
-        StudentName_lable=Label(Class_student_frame,
+        # Student_Name label & Entry
+        StudentName_label=tk.Label(Class_student_frame,
                                 text="Student Name:",
                                 font=("Times New Roman",15,"bold"),bg="white")
-        StudentName_lable.grid(row=0,column=2,pady=5,padx=3,sticky=W)
+        StudentName_label.grid(row=0,column=2,pady=5,padx=3,sticky="w")
 
         StudentName_entry=ttk.Entry(Class_student_frame,
                                     textvariable=self.std_name_var,
                                     width=15,font=("Times New Roman",12))
-        StudentName_entry.grid(row=0,column=3,padx=3,pady=5,sticky=W)
+        StudentName_entry.grid(row=0,column=3,padx=3,pady=5,sticky="w")
 
-        # Department lable & combobox
-        dep_lable=Label(Class_student_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
-        dep_lable.grid(row=1,column=0,padx=3,pady=5,sticky=W)
+        # Department label & combobox
+        dep_label=tk.Label(Class_student_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
+        dep_label.grid(row=1,column=0,padx=3,pady=5,sticky="W")
 
         self.dep_combo=ttk.Combobox(Class_student_frame,
                                 textvariable=self.dep_var,
@@ -158,23 +158,23 @@ class Attendance:
         self.dep_combo.current(0)
         # Bind the department combobox selection to a function
         self.dep_combo.bind("<<ComboboxSelected>>", self.update_course_options)
-        self.dep_combo.grid(row=1,column=1,padx=3,pady=5,sticky=W)
+        self.dep_combo.grid(row=1,column=1,padx=3,pady=5,sticky="W")
 
-        # Course lable & combobox
-        course_lable=Label(Class_student_frame,text="Course:",font=("Times New Roman",15,"bold"),bg="white")
-        course_lable.grid(row=1,column=2,padx=3,pady=5,sticky=W)
+        # Course label & combobox
+        course_label=tk.Label(Class_student_frame,text="Course:",font=("Times New Roman",15,"bold"),bg="white")
+        course_label.grid(row=1,column=2,padx=3,pady=5,sticky="W")
 
         self.course_combo=ttk.Combobox(Class_student_frame,
                                     textvariable=self.course_var,
                                     font=("Times New Roman",12),width=13,state="readonly")
-        self.course_combo["values"]=("Select Course","","","")
+        self.course_combo["values"]=("Select Course",)
         self.course_combo.current(0)
-        self.course_combo.grid(row=1,column=3,padx=3,pady=5,sticky=W)
+        self.course_combo.grid(row=1,column=3,padx=3,pady=5,sticky="W")
 
 
-        # Semester lable & combobox
-        Semester_lable=Label(Class_student_frame,text="Semester:",font=("Times New Roman",15,"bold"),bg="white")
-        Semester_lable.grid(row=2,column=0,padx=3,pady=5,sticky=W)
+        # Semester label & combobox
+        Semester_label=tk.Label(Class_student_frame,text="Semester:",font=("Times New Roman",15,"bold"),bg="white")
+        Semester_label.grid(row=2,column=0,padx=3,pady=5,sticky="W")
 
         Semester_combo=ttk.Combobox(Class_student_frame,
                                     textvariable=self.sem_var,
@@ -182,12 +182,12 @@ class Attendance:
                                     state="readonly")
         Semester_combo["values"]=("Select Semester","1","2","3","4","5","6")
         Semester_combo.current(0)
-        Semester_combo.grid(row=2,column=1,padx=3,pady=5,sticky=W)
+        Semester_combo.grid(row=2,column=1,padx=3,pady=5,sticky="W")
 
 
-        batch_lable=Label(Class_student_frame,text="Batch:",
+        batch_label=tk.Label(Class_student_frame,text="Batch:",
                                 font=("Times New Roman",15,"bold"),bg="white")
-        batch_lable.grid(row=2,column=2,pady=5,padx=3,sticky=W)
+        batch_label.grid(row=2,column=2,pady=5,padx=3,sticky="w")
 
         batch_combo=ttk.Combobox(Class_student_frame,width=13,
                                     textvariable=self.batch_var,
@@ -195,43 +195,43 @@ class Attendance:
                                     state="readonly")
         batch_combo["values"]=("Select Batch","1","2")
         batch_combo.current(0)
-        batch_combo.grid(row=2,column=3,padx=3,pady=5,sticky=W)
+        batch_combo.grid(row=2,column=3,padx=3,pady=5,sticky="W")
 
 
-        # Date & Time lable & Entry
+        # Date & Time label & Entry
 
-        date_lable=Label(Class_student_frame,text="Date:",
+        date_label=tk.Label(Class_student_frame,text="Date:",
                             font=("Times New Roman",15,"bold"),bg="white")
-        date_lable.grid(row=3,column=0,padx=3,pady=5,sticky=W)
+        date_label.grid(row=3,column=0,padx=3,pady=5,sticky="W")
 
         date_entry=DateEntry(Class_student_frame,width=13,
                                 textvariable=self.date_var,
                                 font=("Times New Roman",12),state="readonly",date_pattern='dd-mm-yyyy')
-        date_entry.grid(row=3,column=1,padx=3,pady=5,sticky=W)
+        date_entry.grid(row=3,column=1,padx=3,pady=5,sticky="W")
 
 
-        Time_lable=Label(Class_student_frame,
+        Time_label=tk.Label(Class_student_frame,
                                 text="Time:",
                                 font=("Times New Roman",15,"bold"),bg="white")
-        Time_lable.grid(row=3,column=2,pady=5,padx=3,sticky=W)
+        Time_label.grid(row=3,column=2,pady=5,padx=3,sticky="W")
 
         Time_entry=ttk.Entry(Class_student_frame,
                                     textvariable=self.time_var,
                                     width=15,font=("Times New Roman",12),style="")
-        Time_entry.grid(row=3,column=3,padx=3,pady=5,sticky=W)
+        Time_entry.grid(row=3,column=3,padx=3,pady=5,sticky="W")
 
 
-        # Attendance Status lable & comboo
-        gen_lable=Label(Class_student_frame,text="Attendance Status:",
+        # Attendance Status label & comboo
+        status_label=tk.Label(Class_student_frame,text="Attendance Status:",
                         font=("Times New Roman",15,"bold"),bg="white")
-        gen_lable.grid(row=4,column=0,pady=5,padx=3,sticky=W)
+        status_label.grid(row=4,column=0,pady=5,padx=3,sticky="W")
 
-        gen_combo=ttk.Combobox(Class_student_frame,
+        status_combo=ttk.Combobox(Class_student_frame,
                                 textvariable=self.attendance_var,
                                 font=("Times New Roman",12),width=13,state="readonly")
-        gen_combo["values"]=("Select Status","","","Others")
-        gen_combo.current(0)
-        gen_combo.grid(row=4,column=1,padx=3,pady=5,sticky=W)
+        status_combo["values"]=("Select Status", "Present", "Absent", "Late", "Excused")
+        status_combo.current(0)
+        status_combo.grid(row=4,column=1,padx=3,pady=5,sticky="W")
 
 
 
@@ -251,17 +251,17 @@ class Attendance:
                                     style="CustomL.TButton")
         update_button.place(x=292,y=255)
 
-        rest_button=ttk.Button(Class_student_frame,text="Rest",width=18,style="CustomL.TButton",
+        reset_button=ttk.Button(Class_student_frame,text="Reset",width=18,style="CustomL.TButton",
                                 command=self.reset_data)
-        rest_button.place(x=435,y=255)
+        reset_button.place(x=435,y=255)
 
 
 
 
 
-        # Right lable frame
-        right_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Attendance Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        right_frame.place(x=650,y=190,width=600,height=520)
+        # Right label frame
+        right_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Attendance Details",font=("Times New Roman",20,"bold"),labelanchor='n')
+        right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.65,anchor='center')
 
         # img_rightF = Image.open("sample images/black.png")
         # img_rightF = img_rightF.resize((580,130), Image.Resampling.LANCZOS)
@@ -272,21 +272,21 @@ class Attendance:
 
 #                                       Search Table
         # Search table frame
-        table_frame=Frame(right_frame,bd=2,bg="white",relief=RIDGE)
+        table_frame=tk.Frame(right_frame,bd=2,bg="white",relief="ridge")
         table_frame.place(x=10,y=5,width=575,height=470)
 
         # scroll bar
-        scroll_x=ttk.Scrollbar(table_frame,orient=HORIZONTAL)
-        scroll_y=ttk.Scrollbar(table_frame,orient=VERTICAL)
+        scroll_x=ttk.Scrollbar(table_frame,orient="horizontal")
+        scroll_y=ttk.Scrollbar(table_frame,orient="vertical")
 
 
         self.AttendanceReport_Table=ttk.Treeview(table_frame,
                                             column=("id","name","dep","course","sem","batch",'date',"time","atten"),
                                             xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
 
-        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_x.pack(side="bottom",fill="x")
         scroll_x.config(command=self.AttendanceReport_Table.xview)
-        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_y.pack(side="right",fill="y")
         scroll_y.config(command=self.AttendanceReport_Table.yview)
 
 
@@ -313,7 +313,7 @@ class Attendance:
         self.AttendanceReport_Table.column("time",width=100)
         self.AttendanceReport_Table.column("atten",width=100)
 
-        self.AttendanceReport_Table.pack(fill=BOTH,expand=1)
+        self.AttendanceReport_Table.pack(fill="both",expand=1)
 
 
 
@@ -328,7 +328,7 @@ class Attendance:
         self.std_name_var.set("")
         self.dep_var.set("Select Department")
         self.course_var.set("Select Course")
-        self.sem_var.set("Select Semeter")
+        self.sem_var.set("Select Semester")
         self.batch_var.set("Select Batch")
         self.date_var.set("")
         self.time_var.set("")
@@ -396,7 +396,7 @@ class Attendance:
 
 
 if __name__ == "__main__":
-    root = Tk()
+    root = tk.Tk()
     # root.config(bg="#f2f3f7")
     app = Attendance(root)
     root.mainloop()

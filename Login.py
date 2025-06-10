@@ -3,8 +3,6 @@ from tkinter import ttk
 import PIL.GifImagePlugin
 import itertools
 from PIL import Image,ImageTk
-# import customtkinter as ctk
-# from customtkinter import CTkImage
 from tkinter import messagebox
 import mysql.connector
 
@@ -56,7 +54,7 @@ CREATE TABLE registration (
 
 Running the App
 ---------------
-python IITP_Login.py      # launches the login window
+python Login.py      # launches the login window
     ↳ “Create an account” opens SignUp.py flow to insert a user record.
     ↳ Successful login opens main Face Recognition System UI.
 
@@ -74,7 +72,7 @@ class Log_in:
         # self.root.config(bg="#000208")
         self.root.title("Face Recognition System")
         self.root.state('zoomed')
-        self.root.minsize(770,383)
+        self.root.minsize(770,410)
         # Bind the Escape key to exit fullscreen
         self.root.bind("<Escape>", lambda event: self.toggle_fullscreen())
         # self.root.resizable(False,False)
@@ -201,7 +199,9 @@ class Log_in:
                             text="Lost password?",
                             relief="solid",bd=0,
                             font= ("Arial", 12,),
-                            bg= "#000000", fg= "#2B6EFF",activebackground="#000000",
+                            bg= "#000000", fg= "#2B6EFF",
+                            activebackground="#000000",
+                            activeforeground="#FFFFFF",
                             command=self.forget_pwd)
         l_pwd.place(x=520,y=330)
 
@@ -218,6 +218,8 @@ class Log_in:
         Create = Button(main_frame,
                             cursor="hand2",
                             text="Create an account",
+                            activebackground="#000000",
+                            activeforeground="#FFFFFF",
                             relief="solid",bd=0,
                             font= ("Arial", 13,),
                             bg= "#000000", fg= "#2B6EFF",
@@ -262,6 +264,7 @@ class Log_in:
                 self.pwd_entry.delete(0,END)
             else:
                 self.home()
+            connect.close()
 
 
     # Lost password⁇
@@ -286,7 +289,7 @@ class Log_in:
                 self.forget_pwd_win(name,Question,Ans)
             
         
-    
+    '''============================================================================'''
     # forget password window
     def forget_pwd_win(self,name,Q,ans):
 
@@ -331,7 +334,7 @@ class Log_in:
         lb_1.place(x=390,y=5,width=375)
 
 
-        Q_lb_1=Label(win,text="Your Security Quetion:",font=("Times New Roman",16,"bold"),bg="white",justify="center")
+        Q_lb_1=Label(win,text="Your Security Question:",font=("Times New Roman",16,"bold"),bg="white",justify="center")
         Q_lb_1.place(x=390,y=60,width=375)
 
         Q_lb_2=Label(win,text=Q,font=("Times New Roman",16,),bg="white")
@@ -376,7 +379,6 @@ class Log_in:
 
 
 
-        win.mainloop()
 
 
                 # ------------------- Buttons Functions -------------------- #
@@ -388,7 +390,7 @@ class Log_in:
         elif(self.P_entry.get() != self.CP_entry.get()):
             messagebox.showerror("Error", "Password and Confirm Password mustbe same.",parent=self.win)
         elif(self.A_entry.get() != ans):
-            messagebox.showerror("404 Error","Security Question's Answer entered is worng",parent=self.win)
+            messagebox.showerror("404 Error","Security Question's Answer entered is wrong",parent=self.win)
         else:
             pass
             connect = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
@@ -399,7 +401,7 @@ class Log_in:
             connect.commit()
             connect.close()
             self.Close_forget_pwd_win()
-            messagebox.showinfo("Sucsses","New Password set sucssesfuly.\nNow you can login with new password")
+            messagebox.showinfo("Success","New password set successfully.\nNow you can log in with the new password")
 
 
     # close button
@@ -420,7 +422,7 @@ class Log_in:
     # ---------------------------------------------------------------------------
     # def animation(self):
     #     self.l_lbl.configure(image=next(self.frames_cycle))
-    #     # call myself again after the GIF’s own delay (or 100 ms if unavailable)
+    #     # call myself again after the GIF’s own delay (or 100 ms if unavailabel)
     #     delay = getattr(Image.open, "info", {}).get("duration", 100)
     #     self.root.after(delay, self.animation)
 

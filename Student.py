@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
@@ -20,20 +20,19 @@ class Student:
 
 
         # ........Variables...........
-        self.var_dep=StringVar()
-        self.var_course=StringVar()
-        self.var_year=StringVar()
-        self.var_sem=StringVar()
-        self.var_std_id=StringVar()
-        self.var_std_name=StringVar()
-        self.var_batch=StringVar()
-        self.var_roll=StringVar()
-        self.var_gender=StringVar()
-        self.var_dob=StringVar()
-        self.var_email=StringVar()
-        self.var_phn=StringVar()
-        self.var_radio=StringVar()
-        # self.var_radio2=StringVar()
+        self.var_dep=tk.StringVar()
+        self.var_course=tk.StringVar()
+        self.var_year=tk.StringVar()
+        self.var_sem=tk.StringVar()
+        self.var_std_id=tk.StringVar()
+        self.var_std_name=tk.StringVar()
+        self.var_batch=tk.StringVar()
+        self.var_roll=tk.StringVar()
+        self.var_gender=tk.StringVar()
+        self.var_dob=tk.StringVar()
+        self.var_email=tk.StringVar()
+        self.var_phn=tk.StringVar()
+        self.var_radio=tk.StringVar()
 
 
 
@@ -44,7 +43,7 @@ class Student:
         img_bg = img_bg.resize((self.root.winfo_screenwidth(), self.root.winfo_screenheight()), Image.Resampling.LANCZOS)
         self.photo_bg = ImageTk.PhotoImage(img_bg)
 
-        bg_lbl = Label(self.root, image=self.photo_bg)
+        bg_lbl = tk.Label(self.root, image=self.photo_bg)
         bg_lbl.place(x=0, y=0, width=self.root.winfo_screenwidth(), height=self.root.winfo_screenheight())  # Full screen
 
 
@@ -54,15 +53,16 @@ class Student:
         img_logo = img_logo.resize((500, 105), Image.Resampling.LANCZOS)
         self.photo_logo = ImageTk.PhotoImage(img_logo)
 
-        l_lbl = Label(self.root, image=self.photo_logo, bg="#D3D3D3")
+        l_lbl = tk.Label(self.root, image=self.photo_logo, bg="#D3D3D3")
         l_lbl.place(x=0, y=5, width=self.root.winfo_screenwidth(), height=105)  # Full width
         l_lbl.config(anchor="center")   # Make the logo centered
 
 
 
         # title
-        Lab_title=Label(self.root, text="Student Management System",font= ("Gabriola", 35, "bold"), bg= "#1C1C1C", fg= "#00FF00" )
-        Lab_title.place(x=0, y=115, height=60, width=self.root.winfo_screenwidth())
+        Lbl_title=tk.Label(self.root, text="Student Management System",font= ("Gabriola", 35, "bold") if "Gabriola" in tk.font.families() else ("Times New Roman", 35, "bold"),
+                            bg= "#1C1C1C", fg= "#00FF00" )
+        Lbl_title.place(x=0, y=115, height=60, width=self.root.winfo_screenwidth())
 
 
         # Home Button
@@ -70,7 +70,7 @@ class Student:
         img_Home = img_Home.resize((55,55), Image.Resampling.LANCZOS)
         self.photo_Home = ImageTk.PhotoImage(img_Home)
 
-        btt_Home=Button(Lab_title,
+        btt_Home=tk.Button(Lbl_title,
                             image=self.photo_Home,
                             padx=5,pady=5,bd=0,
                             cursor="hand2",
@@ -78,17 +78,17 @@ class Student:
                             bg= "#1C1C1C",
                             activebackground="#1C1C1C",
                             fg= "#00FF00")
-        btt_Home.place(x=0,y=0,width=55,height=55)
+        btt_Home.place(relx=0.001,height=55,)
 
 
         # ========Time==========#
-        time_lb=Label(Lab_title, 
+        time_lb=tk.Label(Lbl_title, 
                             
-                            font= ("Monotype Corsiva", 15, "bold"), 
+                            font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tk.font.families() else ("Times New Roman", 15, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
-        time_lb.place(x=1190,y=0,height=55)
+        time_lb.place(relx=0.926,height=55)
 
         def Time():
             string = strftime('%H:%M:%S\n%p')
@@ -105,137 +105,137 @@ class Student:
         # main_frame.place(x=10,y=180,width=1260,height=540)
 
 
-        # Left lable frame
-        left_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        left_frame.place(x=20,y=190,width=600,height=520)
+        # Left label frame
+        left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Details",font=("Times New Roman",20,"bold"),labelanchor="n")
+        left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.65,anchor="center")
 
         img_leftF = Image.open("sample images/student_detail2.jpg")
         img_leftF = img_leftF.resize((580,130), Image.Resampling.LANCZOS)
         self.photo_leftF = ImageTk.PhotoImage(img_leftF)
 
-        img_leftF_lbl = Label(left_frame, image=self.photo_leftF)
+        img_leftF_lbl = tk.Label(left_frame, image=self.photo_leftF)
         img_leftF_lbl.place(x=7, y=0, width=580, height=130)
 
 
-        # Current course lable frame
-        curr_course_frame=LabelFrame(left_frame,bd=2,bg="white",relief=RIDGE,text="Current Course Information",font=("Times New Roman",15,"bold"))
+        # Current course label frame
+        curr_course_frame=tk.LabelFrame(left_frame,bd=2,bg="white",relief="ridge",text="Current Course Information",font=("Times New Roman",15,"bold"))
         curr_course_frame.place(x=7,y=135,width=580,height=95)
 
-        # Department lable & combobox
-        dep_lable=Label(curr_course_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
-        dep_lable.grid(row=0,column=0,padx=5,sticky=W)
+        # Department label & combobox
+        dep_label=tk.Label(curr_course_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
+        dep_label.grid(row=0,column=0,padx=5,sticky="w")
 
         self.dep_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_dep,font=("Times New Roman",12),width=14,state="readonly")
-        self.dep_combo["values"]=("Setect Department","Computer Science","Management")
+        self.dep_combo["values"]=("Select Department","Computer Science","Management")
         self.dep_combo.current(0)
         # Bind the department combobox selection to a function
         self.dep_combo.bind("<<ComboboxSelected>>", self.update_course_options)
-        self.dep_combo.grid(row=0,column=1,padx=2,pady=3,sticky=W)
+        self.dep_combo.grid(row=0,column=1,padx=2,pady=3,sticky="w")
 
-        # Course lable & combobox
-        course_lable=Label(curr_course_frame,text="Course:",font=("Times New Roman",15,"bold"),bg="white")
-        course_lable.grid(row=0,column=2,padx=5,sticky=W)
+        # Course label & combobox
+        course_label=tk.Label(curr_course_frame,text="Course:",font=("Times New Roman",15,"bold"),bg="white")
+        course_label.grid(row=0,column=2,padx=5,sticky="w")
 
         self.course_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_course,font=("Times New Roman",12),width=14,state="readonly")
-        self.course_combo["values"]=("Setect Course","","","")
+        self.course_combo["values"]=("Select Course","","","")
         self.course_combo.current(0)
-        self.course_combo.grid(row=0,column=3,padx=2,pady=3,sticky=W)
+        self.course_combo.grid(row=0,column=3,padx=2,pady=3,sticky="w")
 
-        # year lable & combobox
-        year_lable=Label(curr_course_frame,text="Addmission Year:",font=("Times New Roman",15,"bold"),bg="white")
-        year_lable.grid(row=1,column=0,sticky=W)
+        # year label & combobox
+        year_label=tk.Label(curr_course_frame,text="Admission Year:",font=("Times New Roman",15,"bold"),bg="white")
+        year_label.grid(row=1,column=0,sticky="w")
 
         year_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_year,font=("Times New Roman",12),width=14,state="readonly")
-        year_combo["values"]=("Setect Year","2020","2021","2022","2023","2024","2025")
+        year_combo["values"]=("Select Year","2020","2021","2022","2023","2024","2025")
         year_combo.current(0)
-        year_combo.grid(row=1,column=1,padx=2,pady=3,sticky=W)
+        year_combo.grid(row=1,column=1,padx=2,pady=3,sticky="w")
 
-        # Semester lable & combobox
-        Semester_lable=Label(curr_course_frame,text="Semester:",font=("Times New Roman",15,"bold"),bg="white")
-        Semester_lable.grid(row=1,column=2,padx=5,sticky=W)
+        # Semester label & combobox
+        Semester_label=tk.Label(curr_course_frame,text="Semester:",font=("Times New Roman",15,"bold"),bg="white")
+        Semester_label.grid(row=1,column=2,padx=5,sticky="w")
 
         Semester_combo=ttk.Combobox(curr_course_frame,textvariable=self.var_sem,font=("Times New Roman",12),width=14,state="readonly")
-        Semester_combo["values"]=("Setect Semester","1","2","3","4","5","6")
+        Semester_combo["values"]=("Select Semester","1","2","3","4","5","6")
         Semester_combo.current(0)
-        Semester_combo.grid(row=1,column=3,padx=2,pady=3,sticky=W)
+        Semester_combo.grid(row=1,column=3,padx=2,pady=3,sticky="w")
 
 
-        # Class Student Information lable frame
-        Class_student_frame=LabelFrame(left_frame,bd=2,bg="white",relief=RIDGE,text="Class Student Information",font=("Times New Roman",15,"bold"))
+        # Class Student Information label frame
+        Class_student_frame=tk.LabelFrame(left_frame,bd=2,bg="white",relief="ridge",text="Class Student Information",font=("Times New Roman",15,"bold"))
         Class_student_frame.place(x=7,y=235,width=580,height=190)
 
-        # StudentId lable & Entry
-        StudentID_lable=Label(Class_student_frame,text="StudentID:",font=("Times New Roman",15,"bold"),bg="white")
-        StudentID_lable.grid(row=0,column=0,pady=3,sticky=W)
+        # StudentId label & Entry
+        StudentID_label=tk.Label(Class_student_frame,text="StudentID:",font=("Times New Roman",15,"bold"),bg="white")
+        StudentID_label.grid(row=0,column=0,pady=3,sticky="w")
 
         StudentID_entry=ttk.Entry(Class_student_frame,textvariable=self.var_std_id,width=15,font=("Times New Roman",12),style="")
-        StudentID_entry.grid(row=0,column=1,padx=3,pady=3,sticky=W)
+        StudentID_entry.grid(row=0,column=1,padx=3,pady=3,sticky="w")
 
-        # Student_Name lable & Entry
-        StudentName_lable=Label(Class_student_frame,text="Student Name:",font=("Times New Roman",15,"bold"),bg="white")
-        StudentName_lable.grid(row=0,column=2,pady=3,sticky=W)
+        # Student_Name label & Entry
+        StudentName_label=tk.Label(Class_student_frame,text="Student Name:",font=("Times New Roman",15,"bold"),bg="white")
+        StudentName_label.grid(row=0,column=2,pady=3,sticky="w")
 
         StudentName_entry=ttk.Entry(Class_student_frame,textvariable=self.var_std_name,width=15,font=("Times New Roman",12))
-        StudentName_entry.grid(row=0,column=3,padx=3,pady=3,sticky=W)
+        StudentName_entry.grid(row=0,column=3,padx=3,pady=3,sticky="w")
 
-        # class division lable & Entry
-        batch_lable=Label(Class_student_frame,text="Batch:",font=("Times New Roman",15,"bold"),bg="white")
-        batch_lable.grid(row=1,column=0,pady=3,sticky=W)
+        # class division label & Entry
+        batch_label=tk.Label(Class_student_frame,text="Batch:",font=("Times New Roman",15,"bold"),bg="white")
+        batch_label.grid(row=1,column=0,pady=3,sticky="w")
 
         batch_combo=ttk.Combobox(Class_student_frame,width=13,
                                     textvariable=self.var_batch,
                                     font=("Times New Roman",12),
                                     state="readonly")
-        batch_combo["values"]=("Setect Batch","1","2")
+        batch_combo["values"]=("Select Batch","1","2")
         batch_combo.current(0)
-        batch_combo.grid(row=1,column=1,padx=3,pady=3,sticky=W)
+        batch_combo.grid(row=1,column=1,padx=3,pady=3,sticky="w")
 
-        # Roll No lable & Entry
-        roll_lable=Label(Class_student_frame,text="Roll No:",font=("Times New Roman",15,"bold"),bg="white")
-        roll_lable.grid(row=1,column=2,pady=3,sticky=W)
+        # Roll No label & Entry
+        roll_label=tk.Label(Class_student_frame,text="Roll No:",font=("Times New Roman",15,"bold"),bg="white")
+        roll_label.grid(row=1,column=2,pady=3,sticky="w")
 
         roll_entry=ttk.Entry(Class_student_frame,width=15,textvariable=self.var_roll,font=("Times New Roman",12))
-        roll_entry.grid(row=1,column=3,padx=3,pady=3,sticky=W)
+        roll_entry.grid(row=1,column=3,padx=3,pady=3,sticky="w")
 
-        # Gender lable & comboo
-        gen_lable=Label(Class_student_frame,text="Gender:",font=("Times New Roman",15,"bold"),bg="white")
-        gen_lable.grid(row=2,column=0,pady=3,sticky=W)
+        # Gender label & comboo
+        gen_label=tk.Label(Class_student_frame,text="Gender:",font=("Times New Roman",15,"bold"),bg="white")
+        gen_label.grid(row=2,column=0,pady=3,sticky="w")
 
         gen_combo=ttk.Combobox(Class_student_frame,textvariable=self.var_gender,font=("Times New Roman",12),width=13,state="readonly",background='darkblue')
-        gen_combo["values"]=("Setect Gender","Male","Female","Others")
+        gen_combo["values"]=("Select Gender","Male","Female","Others")
         gen_combo.current(0)
-        gen_combo.grid(row=2,column=1,padx=3,pady=3,sticky=W)
+        gen_combo.grid(row=2,column=1,padx=3,pady=3,sticky="w")
 
         # gen_entry=ttk.Entry(Class_student_frame,width=15,font=("Times New Roman",12))
         # gen_entry.grid(row=2,column=1,padx=5,pady=5,sticky=W)
 
-        # DOB lable & Entry
-        dob_lable=Label(Class_student_frame,text="DOB:",font=("Times New Roman",15,"bold"),bg="white")
-        dob_lable.grid(row=2,column=2,pady=3,sticky=W)
+        # DOB label & Entry
+        dob_label=tk.Label(Class_student_frame,text="DOB:",font=("Times New Roman",15,"bold"),bg="white")
+        dob_label.grid(row=2,column=2,pady=3,sticky="w")
 
         dob_entry=DateEntry(Class_student_frame,width=13,textvariable=self.var_dob,font=("Times New Roman",12),state="readonly",date_pattern='dd-mm-yyyy')
-        dob_entry.grid(row=2,column=3,padx=3,pady=3,sticky=W)
+        dob_entry.grid(row=2,column=3,padx=3,pady=3,sticky="w")
 
-        # email lable & Entry
-        email_lable=Label(Class_student_frame,text="Email:",font=("Times New Roman",15,"bold"),bg="white")
-        email_lable.grid(row=3,column=0,pady=3,sticky=W)
+        # email label & Entry
+        email_label=tk.Label(Class_student_frame,text="Email:",font=("Times New Roman",15,"bold"),bg="white")
+        email_label.grid(row=3,column=0,pady=3,sticky="W")
 
         email_entry=ttk.Entry(Class_student_frame,width=15,textvariable=self.var_email,font=("Times New Roman",12))
-        email_entry.grid(row=3,column=1,padx=3,pady=3,sticky=W)
+        email_entry.grid(row=3,column=1,padx=3,pady=3,sticky="W")
 
-        # Phone No lable & Entry
-        phone_lable=Label(Class_student_frame,text="Phone No:",font=("Times New Roman",15,"bold"),bg="white")
-        phone_lable.grid(row=3,column=2,pady=3,sticky=W)
+        # Phone No label & Entry
+        phone_label=tk.Label(Class_student_frame,text="Phone No:",font=("Times New Roman",15,"bold"),bg="white")
+        phone_label.grid(row=3,column=2,pady=3,sticky="W")
 
         phone_entry=ttk.Entry(Class_student_frame,width=15,textvariable=self.var_phn,font=("Times New Roman",12))
-        phone_entry.grid(row=3,column=3,padx=3,pady=3,sticky=W)
+        phone_entry.grid(row=3,column=3,padx=3,pady=3,sticky="W")
 
         # Radio Buttons
         button_1=ttk.Radiobutton(Class_student_frame,text="Take Photo Sample",variable=self.var_radio,value="yes")
         button_1.grid(row=6,column=0)
 
         button_2=ttk.Radiobutton(Class_student_frame,text="Do Not Take Photo Sample",variable=self.var_radio,value="no",)
-        button_2.grid(row=6,column=2,padx=10,pady=3,sticky=W)
+        button_2.grid(row=6,column=2,padx=10,pady=3,sticky="W")
 
         # Buttons
         style1 = ttk.Style()
@@ -250,9 +250,9 @@ class Student:
         del_button=ttk.Button(left_frame,text="Delete",width=19,style="CustomL.TButton")
         del_button.place(x=299,y=455)
 
-        rest_button=ttk.Button(left_frame,text="Rest",width=19,style="CustomL.TButton",
+        reset_button=ttk.Button(left_frame,text="Reset",width=19,style="CustomL.TButton",
                                 command=self.reset_data)
-        rest_button.place(x=445,y=455)
+        reset_button.place(x=445,y=455)
 
         take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
         take_pic_button.place(x=20,y=429)
@@ -262,61 +262,61 @@ class Student:
 
 
 
-        # Right lable frame
-        right_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,text="Student Details",font=("Times New Roman",20,"bold"),labelanchor=N)
-        right_frame.place(x=650,y=190,width=600,height=520)
+        # Right label frame
+        right_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Details",font=("Times New Roman",20,"bold"),labelanchor="n")
+        right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.65,anchor='center')
 
         img_rightF = Image.open("sample images/btnStudent.png")
         img_rightF = img_rightF.resize((580,110), Image.Resampling.LANCZOS)
         self.photo_rightF = ImageTk.PhotoImage(img_rightF)
 
-        img_rightF_lbl = Label(right_frame, image=self.photo_rightF)
+        img_rightF_lbl = tk.Label(right_frame, image=self.photo_rightF)
         img_rightF_lbl.place(x=7, y=0, width=580, height=110)
 
 
 # --------------------------------------Search System--------------------------------------- #
 
-        # Search lable frame
-        search_frame=LabelFrame(right_frame,bd=2,bg="white",relief=RIDGE,text="Search System",font=("Times New Roman",15,"bold"))
+        # Search label frame
+        search_frame=tk.LabelFrame(right_frame,bd=2,bg="white",relief="ridge",text="Search System",font=("Times New Roman",15,"bold"))
         search_frame.place(x=7,y=115,width=580,height=70)
 
-        # search lable, combobox,entry & button
-        search_lable=Label(search_frame,text="Search by:",font=("Times New Roman",15,"bold"),fg="red",bg="white")
-        search_lable.grid(row=0,column=0,padx=4,pady=5,sticky=W)
+        # search label, combobox,entry & button
+        search_label=tk.Label(search_frame,text="Search by:",font=("Times New Roman",15,"bold"),fg="red",bg="white")
+        search_label.grid(row=0,column=0,padx=4,pady=5,sticky="W")
 
         search_combo=ttk.Combobox(search_frame,font=("Times New Roman",12),width=10,state="readonly")
-        search_combo["values"]=("Setect","StudentID","Roll No","Others")
+        search_combo["values"]=("Select","StudentID","Roll No","Others")
         search_combo.current(0)
-        search_combo.grid(row=0,column=1,padx=4,pady=5,sticky=W)
+        search_combo.grid(row=0,column=1,padx=4,pady=5,sticky="W")
 
         search_entry=ttk.Entry(search_frame,width=15,font=("Times New Roman",12))
-        search_entry.grid(row=0,column=2,padx=4,pady=5,sticky=W)
+        search_entry.grid(row=0,column=2,padx=4,pady=5,sticky="W")
 
         style2 = ttk.Style()
         style2.configure("CustomR.TButton", font=("Arial", 10, "bold"), foreground="red", )
 
         search_button=ttk.Button(search_frame,text="Save",width=14,style="CustomR.TButton")
-        search_button.grid(row=0,column=3,padx=4,pady=5,sticky=W)
+        search_button.grid(row=0,column=3,padx=4,pady=5,sticky="W")
 
         Show_all_button=ttk.Button(search_frame,text="Show All",width=14,style="CustomR.TButton")
-        Show_all_button.grid(row=0,column=4,padx=4,pady=5,sticky=W)
+        Show_all_button.grid(row=0,column=4,padx=4,pady=5,sticky="W")
 
 #                                       Search Table
         # Search table frame
-        table_frame=Frame(right_frame,bd=2,bg="white",relief=RIDGE)
+        table_frame=tk.Frame(right_frame,bd=2,bg="white",relief="ridge")
         table_frame.place(x=7,y=190,width=580,height=235)
 
         # scroll bar
-        scroll_x=ttk.Scrollbar(table_frame,orient=HORIZONTAL)
-        scroll_y=ttk.Scrollbar(table_frame,orient=VERTICAL)
+        scroll_x=ttk.Scrollbar(table_frame,orient="horizontal")
+        scroll_y=ttk.Scrollbar(table_frame,orient="vertical")
 
         self.student_table=ttk.Treeview(table_frame,
                                             column=("dep","course","year","sem","id","name","batch","roll","gender",'dob',"email","phn no","photo"),
                                             xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
 
-        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_x.pack(side="bottom",fill="x")
         scroll_x.config(command=self.student_table.xview)
-        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_y.pack(side="right",fill="y")
         scroll_y.config(command=self.student_table.yview)
 
 
@@ -350,7 +350,7 @@ class Student:
         self.student_table.column("phn no",width=100)
         self.student_table.column("photo",width=150)
 
-        self.student_table.pack(fill=BOTH,expand=1)
+        self.student_table.pack(fill="both",expand=1)
 
 
 
@@ -359,15 +359,15 @@ class Student:
 
     def add_data(self):
         if (
-        self.var_dep.get() == "Setect Department" or
-        self.var_course.get() == "Setect Course" or
-        self.var_year.get() == "Setect Year" or
-        self.var_sem.get() == "Setect Semester" or
+        self.var_dep.get() == "Select Department" or
+        self.var_course.get() == "Select Course" or
+        self.var_year.get() == "Select Year" or
+        self.var_sem.get() == "Select Semester" or
         self.var_std_id.get() == "" or
         self.var_std_name.get() == "" or
         self.var_batch.get() == "" or
         self.var_roll.get() == "" or
-        self.var_gender.get() == "Setect Gender" or
+        self.var_gender.get() == "Select Gender" or
         self.var_dob.get() == "" or
         self.var_email.get() == "" or
         self.var_phn.get() == "" or
@@ -381,7 +381,7 @@ class Student:
 
 
 
-            messagebox.showinfo("sucsses","saved",parent=self.root)
+            messagebox.showinfo("success","saved",parent=self.root)
             # messagebox.showinfo("Selected Option", "You have selected 'Take Photo Sample' Option.\nPlease ")
 
 
@@ -415,15 +415,15 @@ class Student:
 
     def reset_data(self):
         
-        self.var_dep.set( "Setect Department"),
-        self.var_course.set( "Setect Course"),
-        self.var_year.set( "Setect Year"),
-        self.var_sem.set( "Setect Semester"),
+        self.var_dep.set( "Select Department"),
+        self.var_course.set( "Select Course"),
+        self.var_year.set( "Select Year"),
+        self.var_sem.set( "Select Semester"),
         self.var_std_id.set( ""),
         self.var_std_name.set( ""),
-        self.var_batch.set( ""),
+        self.var_batch.set("Select Batch"),
         self.var_roll.set( ""),
-        self.var_gender.set( "Setect Gender"),
+        self.var_gender.set( "Select Gender"),
         # self.var_dob.set(""),
         self.var_email.set( ""),
         self.var_phn.set( ""),
@@ -465,7 +465,7 @@ class Student:
 
 
 if __name__ == "__main__":
-    root = Tk()
+    root = tk.Tk()
     # root.config(bg="#f2f3f7")
     app = Student(root)
     root.mainloop()

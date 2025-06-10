@@ -36,7 +36,7 @@
 #     # ---------------------------------------------------------------------------
 #     def animate_background(self):
 #         self.bg_lbl.configure(image=next(self.frames_cycle))
-#         # call myself again after the GIF’s own delay (or 100 ms if unavailable)
+#         # call myself again after the GIF’s own delay (or 100 ms if unavailabel)
 #         delay = getattr(Image.open, "info", {}).get("duration", 100)
 #         self.root.after(delay, self.animate_background)
 

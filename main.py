@@ -1,14 +1,13 @@
-from tkinter import *
-# import tkinter
-from tkinter import ttk
-# from tkinter import messagebox
-import tkinter.messagebox
+import tkinter as tk
+from tkinter import ttk,messagebox
+import tkinter.font as tkfont
 from PIL import Image,ImageTk
 from time import strftime
 
 from Student import Student
-from Developer import Developer_detail
-from Help import Help_desk
+from Attendance import Attendance
+from Developer import DeveloperDetail
+from Help import HelpDesk
 
 
 class Face_Recognition_System:
@@ -23,15 +22,16 @@ class Face_Recognition_System:
 
 
 
-        # Load and Display bg img
+        # Load and Display background image
         img_bg = Image.open(r"sample images\Background image.jpg")
         img_bg = img_bg.resize((self.root.winfo_screenwidth(), self.root.winfo_screenheight()), 
                                     Image.Resampling.LANCZOS)
         self.photo_bg = ImageTk.PhotoImage(img_bg)
 
-        bg_lbl = Label(self.root, image=self.photo_bg)
+        bg_lbl = tk.Label(self.root, image=self.photo_bg)
         bg_lbl.place(x=0, y=0, width=self.root.winfo_screenwidth(), 
-                        height=self.root.winfo_screenheight())  # Full screen
+                        height=self.root.winfo_screenheight())  
+        bg_lbl.lower()
 
 
 
@@ -40,29 +40,29 @@ class Face_Recognition_System:
         img_logo = img_logo.resize((500, 115), Image.Resampling.LANCZOS)
         self.photo_logo = ImageTk.PhotoImage(img_logo)
 
-        l_lbl = Label(self.root, image=self.photo_logo, bg="#D3D3D3")
+        l_lbl = tk.Label(self.root, image=self.photo_logo, bg="#D3D3D3")
         l_lbl.place(x=0, y=5, width=self.root.winfo_screenwidth(), height=115)  # Full width
         l_lbl.config(anchor="center")   # Make the logo centered
 
 
 
         # title
-        Lab_title=Label(self.root, 
+        lab_title=tk.Label(self.root, 
                             text="Face Recognition for Secure Attendance Management",
-                            font= ("Monotype Corsiva", 38, "bold"), 
+                            font= ("Monotype Corsiva", 38, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 38, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
-        Lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
+        lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
 
 
         # ========Time==========#
-        time_lb=Label(Lab_title, 
+        time_lb=tk.Label(lab_title, 
                             
-                            font= ("Monotype Corsiva", 15, "bold"), 
+                            font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 15, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
-        time_lb.place(x=1190,y=0,height=55)
+        time_lb.place(relx=0.925,height=55)
 
         def Time():
             string = strftime('%I:%M:%S\n%p')
@@ -72,18 +72,19 @@ class Face_Recognition_System:
 
 
         # ========Date==========#
-        date_lb=Label(Lab_title, 
+        date_lb=tk.Label(lab_title, 
+                            font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 15, "bold"), 
                             
-                            font= ("Monotype Corsiva", 15, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
-        date_lb.place(x=0,y=0,height=55)
+        date_lb.place(relx=0.005,height=55,)
 
         def date():
             string = strftime('%A\n%d-%m-%Y')
             date_lb.config(text=string)
             # date_lb.after(1000, Time)
+            date_lb.after(60000, date)  # update every minute
         date()
 
 
@@ -91,149 +92,121 @@ class Face_Recognition_System:
     # -----------------------------------------------Creating Buttons-------------------------------------------#
 
         # Student details button
-        img_Student = Image.open("sample images/student.webp")
-        img_Student = img_Student.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_Student = ImageTk.PhotoImage(img_Student)
-
-        btt_student=Button(self.root,
-                            image=self.photo_Student,
-                            text="Student Details",
-                            compound="top",
-                            command=self.student_details,
-                            relief=RAISED,cursor="hand2",
-                            font= ("Gabriola", 20, "bold"),
-                            bg= "#1C1C1C",
-                            fg= "#00FF00")
-        btt_student.place(x=100,y=200,width=200,height=245)
+        btn_student = self.create_button("sample images/student.webp", 
+                                        "Student Details",
+                                        self.student_details, 0.15, 0.45)
 
 
 
         # Detect Face button
-        img_DetFace = Image.open("sample images/FaceID-MainArt.jpg")
-        img_DetFace = img_DetFace.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_DetFace = ImageTk.PhotoImage(img_DetFace)
-
-        btt_DetFace=Button(self.root,
-                            image=self.photo_DetFace,
-                            relief=RAISED,
-                            cursor="hand2",
-                            text="Face Detector",
-                            compound="top",
-                            font= ("Gabriola", 20, "bold"),
-                            bg= "#1C1C1C", fg= "#00FF00")
-        btt_DetFace.place(x=400,y=200,width=200,height=245)
-
+        btn_DetFace = self.create_button("sample images/FaceID-MainArt.jpg", 
+                                        "Face Detector",
+                                        self.detect_face, 0.385, 0.45)
+        
 
 
         # Attendance button
-        img_Atten = Image.open("sample images/attendance.png")
-        img_Atten = img_Atten.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_Atten = ImageTk.PhotoImage(img_Atten)
-
-        btt_Atten=Button(self.root,
-                        image=self.photo_Atten,
-                        relief=RAISED,
-                        text="Attendence",
-                        compound="top",
-                        font= ("Gabriola", 20, "bold"),
-                        bg= "#1C1C1C",
-                        fg= "#00FF00",
-                        cursor="hand2")
-        btt_Atten.place(x=700,y=200,width=200,height=245)
-
+        btn_Atten = self.create_button("sample images/attendance.png", 
+                                    "Attendance",
+                                    self.atten_win, 0.62, 0.45)
+        
 
 
         # Help button
-        img_help = Image.open("sample images/help.jpg")
-        img_help = img_help.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_help = ImageTk.PhotoImage(img_help)
-
-        btt_help=Button(self.root,
-                        image=self.photo_help,
-                        relief=RAISED,
-                        compound="top",
-                        text="Help Desk",
-                        font= ("Gabriola", 20, "bold"),
-                        bg= "#1C1C1C",
-                        fg= "#00FF00",
-                        cursor="hand2",
-                        command=self.help_d)
-        btt_help.place(x=1000,y=200,width=200,height=245)
-
+        btn_help = self.create_button("sample images/help.jpg", 
+                                        "Help Desk",
+                                        self.help_d, 0.855, 0.45)
+        
 
 
         # Train Data button
-        img_train = Image.open("sample images/train.jpg")
-        img_train = img_train.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_train = ImageTk.PhotoImage(img_train)
-
-        btt_train=Button(self.root,
-                        image=self.photo_train,
-                        relief=RAISED,
-                        compound="top",
-                        text="Train Data",
-                        font= ("Gabriola", 20, "bold"),
-                        bg= "#1C1C1C",
-                        fg= "#00FF00",
-                        cursor="hand2")
-        btt_train.place(x=100,y=500,width=200,height=245)
-
+        btn_train = self.create_button("sample images/train.jpg", 
+                                        "Train Face Data",
+                                        self.train_data, 0.15, 0.8)
+        
 
 
         # Photos button
-        img_Photo = Image.open("sample images/image.jpg")
-        img_Photo = img_Photo.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_Photo = ImageTk.PhotoImage(img_Photo)
-
-        btt_Photo=Button(self.root,
-                        image=self.photo_Photo,
-                        relief=RAISED,
-                        text="Photo",
-                        compound="top",
-                        font= ("Gabriola", 20, "bold"),
-                        bg= "#1C1C1C",
-                        fg= "#00FF00",
-                        cursor="hand2")
-        btt_Photo.place(x=400,y=500,width=200,height=245)
-
+        btn_Photo = self.create_button("sample images/image.jpg", 
+                                        "Photo Gallery",
+                                        self.open_gallery, 0.385 , 0.8)
+        
 
 
         # Developer button
-        img_Developer = Image.open("sample images/developer.png")
-        img_Developer = img_Developer.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_Developer = ImageTk.PhotoImage(img_Developer)
-
-        btt_Developer=Button(self.root,
-                            image=self.photo_Developer,
-                            text="Developer Section",
-                            font= ("Gabriola", 20, "bold"), 
-                            bg= "#1C1C1C",
-                            compound="top",
-                            fg= "#00FF00",
-                            relief=RAISED,
-                            cursor="hand2",
-                            command=self.developer)
-        btt_Developer.place(x=700,y=500,width=200,height=245)
-
+        btn_Developer = self.create_button("sample images/developer.png", 
+                                        "Developer Section",
+                                        self.developer, 0.62 , 0.8)
+        
 
 
         # Exit button
-        img_Exit = Image.open("sample images/exit.jpg")
-        img_Exit = img_Exit.resize((200,200), Image.Resampling.LANCZOS)
-        self.photo_Exit = ImageTk.PhotoImage(img_Exit)
+        btn_Exit = self.create_button("sample images/exit.jpg", 
+                                        "Exit",
+                                        self.confirm_exit, 0.855 , 0.8)
 
-        btt_Exit=Button(self.root,
-                        image=self.photo_Exit,
-                        relief=RAISED,
-                        cursor="hand2",
-                        text="Exit",
-                        font= ("Gabriola", 25, "bold"), 
-                        bg= "#1C1C1C", 
-                        fg= "#00FF00",
-                        compound="top",
-                        command=self.Confirm_Exit)
-        btt_Exit.place(x=1000,y=500,width=200,height=245)
 
+
+
+
+    # -----------------------------------------------Button Functions-------------------------------------------#
+    
+    # Student details button
+    def student_details(self):
+        self.clear_window()                 # Clear current UI
+        self.app = Student(self.root)       # Load Student UI in new window
+
+
+    # Attendance details button
+    def atten_win(self):
+        self.clear_window()                 # Clear current UI
+        self.app = Attendance(self.root)       # Load Student UI in new window
+
+
+    # Developer button
+    def developer(self):
+        self.clear_window()                          # Clear current UI
+        self.app = DeveloperDetail(self.root)       # Load Developer UI in new window
+
+
+    # Help button
+    def help_d(self):
+        self.clear_window()                          # Clear current UI
+        self.app = HelpDesk(self.root)       # Load Help UI in new window
+
+
+    def detect_face(self):
+        messagebox.showinfo("Face Detection", "Face detection not yet implemented.")
+
+    def train_data(self):
+        messagebox.showinfo("Train Data", "Training module not yet implemented.")
+
+    def open_gallery(self):
+        messagebox.showinfo("Photo Gallery", "Gallery access not yet implemented.")
+
+
+    # Exit Button
+    def confirm_exit(self):
+        confirm_exit = messagebox.askyesnocancel(
+            "Face Recognition Attendance System",
+            "Your session seems to be going well.\nAre you sure you want to exit the Face Recognition System?")
+        if confirm_exit:
+            self.root.destroy()
+        else:
+            return
+
+
+
+# ------------- button creation function -------------- #
+    def create_button(self, image_path, text, command, relx, rely):
+        img = Image.open(image_path).resize((200, 200), Image.Resampling.LANCZOS)
+        photo = ImageTk.PhotoImage(img)
+        btn = tk.Button(self.root, image=photo, text=text, compound="top",
+                        font=("Gabriola", 20, "bold"), bg="#1C1C1C", fg="#00FF00",
+                        cursor="hand2", relief=tk.RAISED, command=command)
+        btn.image = photo  # Store a reference
+        # btn.place(x=x, y=y, width=200, height=245)
+        btn.place(relx=relx, rely=rely, anchor="center", width=200, height=245)
 
 
 
@@ -249,52 +222,16 @@ class Face_Recognition_System:
 
 
 
-
-
-    # -----------------------------------------------Button Functions-------------------------------------------#
-    
-    # Student details button
-    def student_details(self):
-        self.clear_window()                 # Clear current UI
-        self.app = Student(self.root)       # Load Student UI in new window
-
-
-
-    # Developer button
-    def developer(self):
-        self.clear_window()                          # Clear current UI
-        self.app = Developer_detail(self.root)       # Load Developer UI in new window
-
-    # Help button
-    def help_d(self):
-        self.clear_window()                          # Clear current UI
-        self.app = Help_desk(self.root)       # Load Help UI in new window
-
-
-
-    # Exit Button
-    def Confirm_Exit(self):
-        confirm_exit = tkinter.messagebox.askyesnocancel(
-            "Face Recognition Attendance System",
-            "Hope you had a smooth session!\nWould you like to exit now?")
-        if confirm_exit:
-            self.root.destroy()
-        else:
-            return
-
-
-
-
-
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
 
 
 
-
 if __name__ == "__main__":
-    root = Tk()
+    root = tk.Tk()
     # root.config(bg="#1C1C1C")
     app = Face_Recognition_System(root)
     root.mainloop()
+
+

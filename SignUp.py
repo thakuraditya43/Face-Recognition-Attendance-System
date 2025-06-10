@@ -51,7 +51,7 @@ CREATE TABLE registration (
 
 Running the App
 ---------------
-python IITP_Login.py      # launches the login window
+python Login.py      # launches the login window
     ↳ “Create an account” opens SignUp.py flow to insert a user record.
     ↳ Successful login opens main Face Recognition System UI.
 
@@ -107,7 +107,7 @@ class Registration:
         self.var_check=IntVar()
 
 
-                # left lable frame
+                # left label frame
         left_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,
                                 text="Welcome to IIT Patna’s Face Recognition Attendance System!",
                                 font=("Times New Roman",16,"bold"),labelanchor=N,background="#000000",fg="#FFFFFF")
@@ -149,12 +149,12 @@ Once registered, you’ll be able to:
         s.place(x=639,y=240,height=480,)
 
 
-        # Right lable frame
+        # Right label frame
         right_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,
                                     text="Create An Account",font=("Times New Roman",20,"bold"),labelanchor=N)
         right_frame.place(x=650,y=255,width=620,height=450)
 
-        # Lable & Entry 
+        # Label & Entry 
         Fname_lb=Label(right_frame,text="First Name:",font=("Times New Roman",15,"bold"),bg="white")
         Fname_lb.place(x=65,y=0)
 
@@ -181,11 +181,11 @@ Once registered, you’ll be able to:
         ID_entry.place(x=365,y=100,width=200)
 
 
-        Q_lb=Label(right_frame,text="Select Security Quetion:",font=("Times New Roman",15,"bold"),bg="white")
+        Q_lb=Label(right_frame,text="Select Security Question:",font=("Times New Roman",15,"bold"),bg="white")
         Q_lb.place(x=65,y=150)
 
         Q_combo=ttk.Combobox(right_frame,width=15,textvariable=self.var_Q,font=("Times New Roman",12),state="readonly")
-        Q_combo["values"]=("Setect Question","What was the name of your first pet?","In what city were you born?","What was your childhood nickname?","What is your favorite Anime?","")
+        Q_combo["values"]=("Select a Question","What was the name of your first pet?","In what city were you born?","What was your childhood nickname?","What is your favorite Anime?","")
         Q_combo.current(0)
         Q_combo.place(x=65,y=175,width=200)
 
@@ -260,14 +260,14 @@ Once registered, you’ll be able to:
                 self.var_lname.get()=="" or
                 self.var_contact.get()=="" or
                 self.var_ID.get()=="" or
-                self.var_Q.get()=="Setect Question" or
+                self.var_Q.get()=="Select a Question" or
                 self.var_A.get()=="" or
                 self.var_P.get()=="" or
                 self.var_CP.get()==""
                 ):
             messagebox.showerror("Error", "All fields are required")
         elif self.var_P.get()!=self.var_CP.get():
-            messagebox.showerror("Error", "Password and Confirm Password mustbe same.")
+            messagebox.showerror("Error", "Password and Confirm Password must be same.")
         elif self.var_check.get() == 0 :
             messagebox.showwarning("Action Required","Please accept Terms & Conditions to continue.")
         else:
@@ -278,7 +278,7 @@ Once registered, you’ll be able to:
             my_cursor.execute(query,value)
             row = my_cursor.fetchone()
             if row != None:
-                messagebox.showerror("Error","User already exist")
+                messagebox.showerror("Error","User already exists")
             else:
                 my_cursor.execute("insert into registration values(%s,%s,%s,%s,%s,%s,%s)",(
                                     self.var_fname.get(),
@@ -291,7 +291,7 @@ Once registered, you’ll be able to:
                 ))
             connect.commit()
             connect.close()
-            messagebox.showinfo("Sucsses","You have registered sucssesfuly, you can Login now.")
+            messagebox.showinfo("Success","You have registered successfully, you can Login now.")
 
 
 
@@ -301,7 +301,7 @@ Once registered, you’ll be able to:
         self.var_lname.set("")
         self.var_contact.set("")
         self.var_ID.set("")
-        self.var_Q.set("Setect Question")
+        self.var_Q.set("Select a Question")
         self.var_A.set("")
         self.var_P.set("")
         self.var_CP.set("")
