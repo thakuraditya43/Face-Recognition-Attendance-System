@@ -403,11 +403,10 @@ class Student:
             except Exception as es:
                 messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)
 
-            messagebox.showinfo("success","saved",parent=self.root)
-            # messagebox.showinfo("Selected Option", "You have selected 'Take Photo Sample' Option.\nPlease ")
 
+    # ========================= Fetch Data ========================== #
 
-
+    
 
     def update_course_options(self, event=None):
         """
