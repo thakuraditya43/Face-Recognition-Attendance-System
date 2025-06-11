@@ -370,57 +370,38 @@ class Student:
         self.var_gender.get() == "Select Gender" or
         self.var_dob.get() == "" or
         self.var_email.get() == "" or
-        self.var_phn.get() == "" or
-        self.var_radio.get()==""
+        self.var_phn.get() == "" 
+        # or self.var_radio.get()==""
             ):
             messagebox.showerror("Error", "All fields are required", parent=self.root)
-        elif self.var_radio.get() == "no":  
-            messagebox.showwarning("Action Required", "You have selected 'Do Not Take Photo Sample'.\nPlease select 'Take Photo Sample' to proceed.",parent=self.root)
+        # elif self.var_radio.get() == "no":  
+        #     messagebox.showwarning("Action Required", "You have selected 'Do Not Take Photo Sample'.\nPlease select 'Take Photo Sample' to proceed.",parent=self.root)
         else:
-            messagebox.showinfo("Wait!","Data is saving",parent=self.root)
-        
-        if self.var_dep.get()=="Select Department" or self.var_std_name.get()=="" or self.var_std_id.get()=="":
-            messagebox.showerror("Error","All Fields are required",parent=self.root)
-        else:
+            # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
             try:
-                conn=mysql.connector.connect(host="localhost",username="root",password="@Adi6797",database="face-recognizer")
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
                 my_cursor=conn.cursor()
                 my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(                                         
-                
                 
                 self.var_dep.get(),
                 self.var_course.get(),
                 self.var_year.get(),
-                self.var_semester.get(),
-                self.va_std_id.get(),
+                self.var_sem.get(),
+                self.var_std_id.get(),
                 self.var_std_name.get(),
-                self.var_div.get(),
+                self.var_batch.get(),
                 self.var_roll.get(),
                 self.var_gender.get(),
                 self.var_dob.get(),
                 self.var_email.get(),
-                self.var_phone.get(),
-                self.var_teacher.get()
-                        
-
-
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        ))                                                                         
+                self.var_phn.get(),
+                self.var_radio.get()
+                    ))                                                                         
                 conn.commit()
                 conn.close()
-                messagebox.showinfo("Sucess","Student details has been added scessfully",parent=self.root)                                                                                        
+                messagebox.showinfo("Success","Student details has been added successfully",parent=self.root)                                                                                        
             except Exception as es:
-                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)                                                                                     
-                                                                                                                                        
-
-
-    
-    
-
+                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)
 
             messagebox.showinfo("success","saved",parent=self.root)
             # messagebox.showinfo("Selected Option", "You have selected 'Take Photo Sample' Option.\nPlease ")
