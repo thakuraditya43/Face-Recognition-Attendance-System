@@ -47,44 +47,44 @@ class Face_Recognition_System:
 
 
         # title
-        lab_title=tk.Label(self.root, 
+        lbl_title=tk.Label(self.root, 
                             text="Face Recognition for Secure Attendance Management",
                             font= ("Monotype Corsiva", 38, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 38, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
-        lab_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
+        lbl_title.place(x=0, y=125, height=60, width=self.root.winfo_screenwidth())
 
 
         # ========Time==========#
-        time_lb=tk.Label(lab_title, 
+        time_lbl=tk.Label(lbl_title, 
                             
                             font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 15, "bold"), 
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
-        time_lb.place(relx=0.925,height=55)
+        time_lbl.place(relx=0.925,height=55)
 
         def Time():
             string = strftime('%I:%M:%S\n%p')
-            time_lb.config(text=string)
-            time_lb.after(1000, Time)
+            time_lbl.config(text=string)
+            time_lbl.after(1000, Time)
         Time()
 
 
         # ========Date==========#
-        date_lb=tk.Label(lab_title, 
+        date_lbl=tk.Label(lbl_title, 
                             font= ("Monotype Corsiva", 15, "bold") if "Monotype Corsiva" in tkfont.families() else ("Times New Roman", 15, "bold"), 
                             
                             bg= "#1C1C1C", 
                             fg= "#00FF00" )
 
-        date_lb.place(relx=0.005,height=55,)
+        date_lbl.place(relx=0.005,height=55,)
 
         def date():
             string = strftime('%A\n%d-%m-%Y')
-            date_lb.config(text=string)
+            date_lbl.config(text=string)
             # date_lb.after(1000, Time)
-            date_lb.after(60000, date)  # update every minute
+            date_lbl.after(60000, date)  # update every minute
         date()
 
 
