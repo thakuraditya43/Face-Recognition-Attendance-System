@@ -350,7 +350,22 @@ class Student:
         self.student_table.column("phn no",width=100)
         self.student_table.column("photo",width=150)
 
+    # <<<<<<< HEAD
         self.student_table.pack(fill="both",expand=1)
+    # =======
+        # self.student_table.pack(fill=BOTH,expand=1)
+        
+
+
+    def toggle_fullscreen(self):
+        """Toggle between fullscreen and maximized mode"""
+        if self.root.attributes('-fullscreen'):  # If currently fullscreen
+            self.root.attributes('-fullscreen', False)  # Exit fullscreen
+            self.root.state('zoomed')  # Maximize window to fit screen
+        else:
+            self.root.attributes('-fullscreen', True)  # Go back to fullscreen
+            self.fetch_data()
+    # >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
 
 
 
@@ -387,7 +402,11 @@ class Student:
                 self.var_course.get(),
                 self.var_year.get(),
                 self.var_sem.get(),
+    # <<<<<<< HEAD
                 self.var_std_id.get(),
+    # =======
+                self.va_std_id.get(),
+    # >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
                 self.var_std_name.get(),
                 self.var_batch.get(),
                 self.var_roll.get(),
@@ -398,14 +417,22 @@ class Student:
                 self.var_radio.get()
                     ))                                                                         
                 conn.commit()
+                self.fetch_data()
                 conn.close()
                 messagebox.showinfo("Success","Student details has been added successfully",parent=self.root)                                                                                        
             except Exception as es:
+# <<<<<<< HEAD
                 messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)
 
 
     # ========================= Fetch Data ========================== #
 
+# =======
+                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)                                                                                     
+                                                                                                                                        
+                
+                
+# >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
     
 
     def update_course_options(self, event=None):
@@ -430,8 +457,21 @@ class Student:
             self.course_combo["values"] = ("Select Course",) # Default for "Select Department" or unknown
         self.var_course.set("Select Course") # Reset the course selection to default
 
+        #==================fetch data=============
+    def fetch_data(self):
+        conn=mysql.connector.connect(host="localhost",username="root",password="@Adi6797",database="'face-recognizer'")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select * from student")
+        dta=my_cursor.fetchall()
 
+        if len_data()!=0:
+            self.student_table.delete(*self.student_table.get_children())
+            for i in data:
+                self.student_table.insert("",END,values=i)
+            conn.commit()
+        conn.close         
 
+        
 
 
     def reset_data(self):
