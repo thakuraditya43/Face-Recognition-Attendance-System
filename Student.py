@@ -341,6 +341,7 @@ class Student:
         self.student_table.column("photo",width=150)
 
         self.student_table.pack(fill=BOTH,expand=1)
+        
 
 
     def toggle_fullscreen(self):
@@ -350,6 +351,7 @@ class Student:
             self.root.state('zoomed')  # Maximize window to fit screen
         else:
             self.root.attributes('-fullscreen', True)  # Go back to fullscreen
+            self.fetch_data()
 
 
 
@@ -390,7 +392,7 @@ class Student:
                 self.var_dep.get(),
                 self.var_course.get(),
                 self.var_year.get(),
-                self.var_semester.get(),
+                self.var_sem.get(),
                 self.va_std_id.get(),
                 self.var_std_name.get(),
                 self.var_div.get(),
@@ -410,13 +412,14 @@ class Student:
                                         
                                         ))                                                                         
                 conn.commit()
+                self.fetch_data()
                 conn.close()
                 messagebox.showinfo("Sucess","Student details has been added scessfully",parent=self.root)                                                                                        
             except Exception as es:
                 messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)                                                                                     
                                                                                                                                         
-
-
+                  
+                   
     
     
 
@@ -426,8 +429,21 @@ class Student:
 
 
 
+        #==================fetch data=============
+    def fetch_data(self):
+         conn=mysql.connector.connect(host="localhost",username="root",password="@Adi6797",database="'face-recognizer'")
+         my_cursor=conn.cursor()
+         my_cursor.execute("select * from student")
+         dta=my_cursor.fetchall()
 
+         if len_data()!=0:
+             self.student_table.delete(*self.student_table.get_children())
+             for i in data:
+                 self.student_table.insert("",END,values=i)
+             conn.commit()
+         conn.close         
 
+        
 
 
 
