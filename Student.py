@@ -107,7 +107,7 @@ class Student:
 
         # Left label frame
         left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Details",font=("Times New Roman",20,"bold"),labelanchor="n")
-        left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.65,anchor="center")
+        left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.7,anchor="center")
 
         img_leftF = Image.open("sample images/student_detail2.jpg")
         img_leftF = img_leftF.resize((580,130), Image.Resampling.LANCZOS)
@@ -244,10 +244,10 @@ class Student:
         save_button=ttk.Button(left_frame,text="Save",command=self.add_data,width=19,style="CustomL.TButton")
         save_button.place(x=5,y=455)
 
-        update_button=ttk.Button(left_frame,text="Update",width=19,style="CustomL.TButton")
+        update_button=ttk.Button(left_frame,text="Update",width=19,style="CustomL.TButton",command=self.update_data)
         update_button.place(x=151,y=455)
 
-        del_button=ttk.Button(left_frame,text="Delete",width=19,style="CustomL.TButton")
+        del_button=ttk.Button(left_frame,text="Delete",width=19,style="CustomL.TButton",command=self.delete_data)
         del_button.place(x=299,y=455)
 
         reset_button=ttk.Button(left_frame,text="Reset",width=19,style="CustomL.TButton",
@@ -264,7 +264,7 @@ class Student:
 
         # Right label frame
         right_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Details",font=("Times New Roman",20,"bold"),labelanchor="n")
-        right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.65,anchor='center')
+        right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.7,anchor='center')
 
         img_rightF = Image.open("sample images/btnStudent.png")
         img_rightF = img_rightF.resize((580,110), Image.Resampling.LANCZOS)
@@ -336,36 +336,23 @@ class Student:
 
         self.student_table["show"]="headings"
 
-        self.student_table.column("dep",width=100)
-        self.student_table.column("course",width=100)
-        self.student_table.column("year",width=100)
-        self.student_table.column("sem",width=100)
-        self.student_table.column("id",width=100)
-        self.student_table.column("name",width=100)
-        self.student_table.column("batch",width=100)
-        self.student_table.column("roll",width=100)
-        self.student_table.column("gender",width=100)
-        self.student_table.column("dob",width=100)
-        self.student_table.column("email",width=100)
+        self.student_table.column("dep",width=120)
+        self.student_table.column("course",width=120)
+        self.student_table.column("year",width=60)
+        self.student_table.column("sem",width=80)
+        self.student_table.column("id",width=90)
+        self.student_table.column("name",width=130)
+        self.student_table.column("batch",width=75)
+        self.student_table.column("roll",width=90)
+        self.student_table.column("gender",width=80)
+        self.student_table.column("dob",width=80)
+        self.student_table.column("email",width=150)
         self.student_table.column("phn no",width=100)
-        self.student_table.column("photo",width=150)
+        self.student_table.column("photo",width=120)
 
-    # <<<<<<< HEAD
         self.student_table.pack(fill="both",expand=1)
-    # =======
-        # self.student_table.pack(fill=BOTH,expand=1)
-        
-
-
-    def toggle_fullscreen(self):
-        """Toggle between fullscreen and maximized mode"""
-        if self.root.attributes('-fullscreen'):  # If currently fullscreen
-            self.root.attributes('-fullscreen', False)  # Exit fullscreen
-            self.root.state('zoomed')  # Maximize window to fit screen
-        else:
-            self.root.attributes('-fullscreen', True)  # Go back to fullscreen
-            self.fetch_data()
-    # >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
+        self.student_table.bind("<ButtonRelease>",self.get_cursor)
+        self.fetch_data()
 
 
 
@@ -386,7 +373,7 @@ class Student:
         self.var_dob.get() == "" or
         self.var_email.get() == "" or
         self.var_phn.get() == "" 
-        # or self.var_radio.get()==""
+        or self.var_radio.get()==""
             ):
             messagebox.showerror("Error", "All fields are required", parent=self.root)
         # elif self.var_radio.get() == "no":  
@@ -402,11 +389,7 @@ class Student:
                 self.var_course.get(),
                 self.var_year.get(),
                 self.var_sem.get(),
-    # <<<<<<< HEAD
                 self.var_std_id.get(),
-    # =======
-                self.va_std_id.get(),
-    # >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
                 self.var_std_name.get(),
                 self.var_batch.get(),
                 self.var_roll.get(),
@@ -421,19 +404,137 @@ class Student:
                 conn.close()
                 messagebox.showinfo("Success","Student details has been added successfully",parent=self.root)                                                                                        
             except Exception as es:
-# <<<<<<< HEAD
                 messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)
 
 
     # ========================= Fetch Data ========================== #
 
-# =======
-                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)                                                                                     
-                                                                                                                                        
-                
-                
-# >>>>>>> 9d5ba97ad89309ce256b1332716a0255e8394b9d
-    
+    def fetch_data(self):
+        conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+        my_cursor=conn.cursor()
+        my_cursor.execute("select * from student")
+        data=my_cursor.fetchall()
+
+        if len(data) !=0:
+            self.student_table.delete(*self.student_table.get_children())
+            for i in data:
+                self.student_table.insert("",tk.END,values=i)
+            conn.commit()
+        conn.close         
+
+
+
+    # ------------get cursor-------
+    def get_cursor(self,event=None):
+        cursor_focus = self.student_table.focus()
+        content = self.student_table.item(cursor_focus)
+        data= content["values"]
+        
+        self.var_dep.set(data[0]),
+        self.var_course.set(data[1]),
+        self.var_year.set(data[2]),
+        self.var_sem.set(data[3]),
+        self.var_std_id.set(data[4]),
+        self.var_std_name.set(data[5]),
+        self.var_batch.set(data[6]),
+        self.var_roll.set(data[7]),
+        self.var_gender.set(data[8]),
+        self.var_dob.set(data[9]),
+        self.var_email.set(data[10]),
+        self.var_phn.set(data[11]),
+        self.var_radio.set(data[12]),
+
+
+# ========== Button Function ================= #
+
+    def reset_data(self):
+        self.var_dep.set( "Select Department"),
+        self.var_course.set( "Select Course"),
+        self.var_year.set( "Select Year"),
+        self.var_sem.set( "Select Semester"),
+        self.var_std_id.set( ""),
+        self.var_std_name.set( ""),
+        self.var_batch.set("Select Batch"),
+        self.var_roll.set( ""),
+        self.var_gender.set( "Select Gender"),
+        # self.var_dob.set(""),
+        self.var_email.set( ""),
+        self.var_phn.set( ""),
+        self.var_radio.set(""),
+
+
+    def update_data(self):
+        if (
+        self.var_dep.get() == "Select Department" or
+        self.var_course.get() == "Select Course" or
+        self.var_year.get() == "Select Year" or
+        self.var_sem.get() == "Select Semester" or
+        self.var_std_id.get() == "" or
+        self.var_std_name.get() == "" or
+        self.var_batch.get() == "" or
+        self.var_roll.get() == "" or
+        self.var_gender.get() == "Select Gender" or
+        self.var_dob.get() == "" or
+        self.var_email.get() == "" or
+        self.var_phn.get() == "" 
+        or self.var_radio.get()==""
+            ):
+            messagebox.showerror("Error", "All fields are required", parent=self.root)
+        else:
+            try:
+                update = messagebox.askyesno("Update","Do you want to update this student details")
+                if update>0:
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    my_cursor=conn.cursor()
+                    my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
+                    "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
+                        self.var_dep.get(),
+                        self.var_course.get(),
+                        self.var_year.get(),
+                        self.var_sem.get(),
+                        self.var_std_name.get(),
+                        self.var_batch.get(),
+                        self.var_roll.get(),
+                        self.var_gender.get(),
+                        self.var_dob.get(),
+                        self.var_email.get(),
+                        self.var_phn.get(),
+                        self.var_radio.get(),
+                        self.var_std_id.get()
+                    ))
+                    conn.commit()
+                    self.fetch_data()
+                    conn.close()
+                    messagebox.showinfo("Success","Student Details Updated Successflly.")
+                else:
+                    return
+            except Exception as es:
+                messagebox.showerror("Error",f"cannot update due to:\n{str(es)}")
+
+
+    def delete_data(self):
+        if self.var_std_id.get() == "":
+            messagebox.showerror("Error", "Student ID is required to delete data.", parent=self.root)
+        else:
+            try:
+                delete = messagebox.askyesno("Delete data","Do you want to delete this student details")
+                if delete>0:
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    my_cursor=conn.cursor()
+                    sql="delete from student where S_ID=%s"
+                    val=(self.var_std_id.get(),)
+                    my_cursor.execute(sql,val)
+
+                    conn.commit()
+                    self.fetch_data()
+                    conn.close()
+                    messagebox.showinfo("Success","Student Details Deleted Successflly.")
+                else:
+                    return
+            except Exception as es:
+                messagebox.showerror("Error",f"cannot delete due to:\n{str(es)}")
+
+
 
     def update_course_options(self, event=None):
         """
@@ -457,43 +558,6 @@ class Student:
             self.course_combo["values"] = ("Select Course",) # Default for "Select Department" or unknown
         self.var_course.set("Select Course") # Reset the course selection to default
 
-        #==================fetch data=============
-    def fetch_data(self):
-        conn=mysql.connector.connect(host="localhost",username="root",password="@Adi6797",database="'face-recognizer'")
-        my_cursor=conn.cursor()
-        my_cursor.execute("select * from student")
-        dta=my_cursor.fetchall()
-
-        if len_data()!=0:
-            self.student_table.delete(*self.student_table.get_children())
-            for i in data:
-                self.student_table.insert("",END,values=i)
-            conn.commit()
-        conn.close         
-
-        
-
-
-    def reset_data(self):
-        
-        self.var_dep.set( "Select Department"),
-        self.var_course.set( "Select Course"),
-        self.var_year.set( "Select Year"),
-        self.var_sem.set( "Select Semester"),
-        self.var_std_id.set( ""),
-        self.var_std_name.set( ""),
-        self.var_batch.set("Select Batch"),
-        self.var_roll.set( ""),
-        self.var_gender.set( "Select Gender"),
-        # self.var_dob.set(""),
-        self.var_email.set( ""),
-        self.var_phn.set( ""),
-        self.var_radio.set(""),
-        
-        
-
-
-
 
 
 
@@ -503,6 +567,7 @@ class Student:
         from main import Face_Recognition_System
         self.clear_window()                          # Clear current UI
         self.app = Face_Recognition_System(self.root)       # Load Home UI in new window
+
 
 
 
@@ -520,8 +585,6 @@ class Student:
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-    
-    #   
 
 
 
