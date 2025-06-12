@@ -5,7 +5,9 @@ from PIL import Image,ImageTk
 from time import strftime
 
 from Student import Student
+from Face_Recognition import FaceDetector
 from Attendance import Attendance
+from Train import TrainData
 from Developer import DeveloperDetail
 from Help import HelpDesk
 
@@ -176,10 +178,14 @@ class Face_Recognition_System:
 
 
     def detect_face(self):
-        messagebox.showinfo("Face Detection", "Face detection not yet implemented.")
+        self.app = FaceDetector(self.root)
+        self.app.detect_face()  # Run the face_recognition method directly
 
     def train_data(self):
-        messagebox.showinfo("Train Data", "Training module not yet implemented.")
+        self.app = TrainData(self.root)
+        self.app.train_model()  # Run the training method directly
+
+
 
     def open_gallery(self):
         messagebox.showinfo("Photo Gallery", "Gallery access not yet implemented.")
