@@ -114,12 +114,12 @@ class Student:
         self.photo_leftF = ImageTk.PhotoImage(img_leftF)
 
         img_leftF_lbl = tk.Label(left_frame, image=self.photo_leftF)
-        img_leftF_lbl.place(x=7, y=0, width=580, height=130)
+        img_leftF_lbl.place(relx=0.5, rely=0.13,anchor="center", width=580, height=130)
 
 
         # Current course label frame
         curr_course_frame=tk.LabelFrame(left_frame,bd=2,bg="white",relief="ridge",text="Current Course Information",font=("Times New Roman",15,"bold"))
-        curr_course_frame.place(x=7,y=135,width=580,height=95)
+        curr_course_frame.place(relx=0.5, rely=0.35,anchor="center",width=580,height=95)
 
         # Department label & combobox
         dep_label=tk.Label(curr_course_frame,text="Department:",font=("Times New Roman",15,"bold"),bg="white")
@@ -162,7 +162,7 @@ class Student:
 
         # Class Student Information label frame
         Class_student_frame=tk.LabelFrame(left_frame,bd=2,bg="white",relief="ridge",text="Class Student Information",font=("Times New Roman",15,"bold"))
-        Class_student_frame.place(x=7,y=235,width=580,height=190)
+        Class_student_frame.place(relx=0.5, rely=0.625,anchor="center",width=580,height=190)
 
         # StudentId label & Entry
         StudentID_label=tk.Label(Class_student_frame,text="StudentID:",font=("Times New Roman",15,"bold"),bg="white")
@@ -242,23 +242,23 @@ class Student:
         style1.configure("CustomL.TButton", font=("Arial", 10, "bold"), foreground="blue", )
 
         save_button=ttk.Button(left_frame,text="Save",command=self.add_data,width=19,style="CustomL.TButton")
-        save_button.place(x=5,y=455)
+        save_button.place(relx=0.005, rely=0.89)
 
         update_button=ttk.Button(left_frame,text="Update",width=19,style="CustomL.TButton",command=self.update_data)
-        update_button.place(x=151,y=455)
+        update_button.place(relx=0.254, rely=0.89)
 
         del_button=ttk.Button(left_frame,text="Delete",width=19,style="CustomL.TButton",command=self.delete_data)
-        del_button.place(x=299,y=455)
+        del_button.place(relx=0.501, rely=0.89)
 
         reset_button=ttk.Button(left_frame,text="Reset",width=19,style="CustomL.TButton",
                                 command=self.reset_data)
-        reset_button.place(x=445,y=455)
+        reset_button.place(relx=0.751, rely=0.89)
 
         take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
-        take_pic_button.place(x=20,y=429)
+        take_pic_button.place(relx=0.25, rely=0.85,anchor="center")
 
         update_pic_button=ttk.Button(left_frame,text="Update Photo Sample",width=35,style="CustomL.TButton")
-        update_pic_button.place(x=315,y=429)
+        update_pic_button.place(relx=0.75, rely=0.85,anchor="center")
 
 
 
@@ -267,18 +267,18 @@ class Student:
         right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.7,anchor='center')
 
         img_rightF = Image.open("sample images/btnStudent.png")
-        img_rightF = img_rightF.resize((580,110), Image.Resampling.LANCZOS)
+        img_rightF = img_rightF.resize((580,130), Image.Resampling.LANCZOS)
         self.photo_rightF = ImageTk.PhotoImage(img_rightF)
 
         img_rightF_lbl = tk.Label(right_frame, image=self.photo_rightF)
-        img_rightF_lbl.place(x=7, y=0, width=580, height=110)
+        img_rightF_lbl.place(relx=0.5, rely=0.13,anchor="center", width=580, height=130)
 
 
 # --------------------------------------Search System--------------------------------------- #
 
         # Search label frame
         search_frame=tk.LabelFrame(right_frame,bd=2,bg="white",relief="ridge",text="Search System",font=("Times New Roman",15,"bold"))
-        search_frame.place(x=7,y=115,width=580,height=70)
+        search_frame.place(relx=0.5, rely=0.33,anchor="center",width=580,height=70)
 
         # search label, combobox,entry & button
         search_label=tk.Label(search_frame,text="Search by:",font=("Times New Roman",15,"bold"),fg="red",bg="white")
@@ -304,7 +304,7 @@ class Student:
 #                                       Search Table
         # Search table frame
         table_frame=tk.Frame(right_frame,bd=2,bg="white",relief="ridge")
-        table_frame.place(x=7,y=190,width=580,height=235)
+        table_frame.place(relx=0.5, rely=0.65,anchor="center",width=580,height=235)
 
         # scroll bar
         scroll_x=ttk.Scrollbar(table_frame,orient="horizontal")

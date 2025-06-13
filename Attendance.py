@@ -112,7 +112,7 @@ class Attendance:
         self.photo_leftF = ImageTk.PhotoImage(img_leftF)
 
         img_leftF_lbl = tk.Label(left_frame, image=self.photo_leftF)
-        img_leftF_lbl.place(x=10, y=0, width=580, height=130)
+        img_leftF_lbl.place(relx=0.5, rely=0.15,anchor="center", width=580, height=130)
 
 
 
@@ -123,7 +123,7 @@ class Attendance:
                                     # text="Class Student Information",
                                     # font=("Times New Roman",15,"bold")
                                     )
-        Class_student_frame.place(x=7,y=150,width=580,height=290)
+        Class_student_frame.place(relx=0.5, rely=0.625,anchor="center",width=580,height=290)
 
         # StudentId label & Entry
         StudentID_label=tk.Label(Class_student_frame,
@@ -273,7 +273,7 @@ class Attendance:
 #                                       Search Table
         # Search table frame
         table_frame=tk.Frame(right_frame,bd=2,bg="white",relief="ridge")
-        table_frame.place(x=10,y=5,width=575,height=470)
+        table_frame.place(relx=0.5, rely=0.5,anchor="center",width=575,height=470)
 
         # scroll bar
         scroll_x=ttk.Scrollbar(table_frame,orient="horizontal")

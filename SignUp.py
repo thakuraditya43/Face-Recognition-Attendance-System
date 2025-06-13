@@ -111,7 +111,7 @@ class Registration:
         left_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,
                                 text="Welcome to IIT Patna’s Face Recognition Attendance System!",
                                 font=("Times New Roman",16,"bold"),labelanchor=N,background="#000000",fg="#FFFFFF")
-        left_frame.place(x=5,y=255,width=625,height=450)
+        left_frame.place(relx=0.25, rely=0.625,anchor="center",width=625,height=450)
 
         lb_0 = Label(left_frame,bd=0,bg="white",relief="flat",
                         text='Ready to experience the future of smart attendance?',justify="center",
@@ -146,13 +146,13 @@ Once registered, you’ll be able to:
 
                 # Separator
         s = ttk.Separator(self.root, orient='vertical')
-        s.place(x=639,y=240,height=480,)
+        s.place(relx=0.5, rely=0.625,anchor="center",height=480,)
 
 
         # Right label frame
         right_frame=LabelFrame(self.root,bd=3,bg="white",relief=RIDGE,
                                     text="Create An Account",font=("Times New Roman",20,"bold"),labelanchor=N)
-        right_frame.place(x=650,y=255,width=620,height=450)
+        right_frame.place(relx=0.75, rely=0.625,anchor="center",width=620,height=450)
 
         # Label & Entry 
         Fname_lb=Label(right_frame,text="First Name:",font=("Times New Roman",15,"bold"),bg="white")
@@ -240,7 +240,7 @@ Once registered, you’ll be able to:
                             relief="solid",bd=0,
                             font= ("Arial", 11,),
                             bg= "#000000", fg= "#FFFFFF")
-        log.place(x=1020,y=200)
+        log.place(relx=0.85, rely=0.27,anchor="center")
 
         log = Button(self.root,
                             cursor="hand2",
@@ -249,7 +249,7 @@ Once registered, you’ll be able to:
                             font= ("Arial", 10,"bold"),
                             bg= "#000000", fg= "#1DCFE6",
                             activebackground="#000000",command=self.Signin,activeforeground="#FFFFFF")
-        log.place(x=1190,y=198)
+        log.place(relx=0.951, rely=0.27,anchor="center")
 
 
 
