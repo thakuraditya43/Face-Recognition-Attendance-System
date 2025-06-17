@@ -1,3 +1,8 @@
+import tkinter as tk
+from tkinter import ttk,messagebox
+import tkinter.font as tkfont
+from PIL import Image,ImageTk
+from time import strftime
 
 from Student import Student
 from Face_Recognition import FaceDetector
@@ -234,5 +239,3 @@ if __name__ == "__main__":
     # root.config(bg="#1C1C1C")
     app = Face_Recognition_System(root)
     root.mainloop()
-
-
