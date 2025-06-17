@@ -82,7 +82,7 @@ class HelpDesk:
     def not_ready(self):
         messagebox.showinfo("Info", "This feature is under development.")
 
-    def unavailabel(self):
+    def unavailable(self):
         msg = messagebox.askretrycancel(title="404 Error!", message="Temporarily unavailabel.\nPlease try again later.")
         if msg:
             self.unavailabel()
@@ -143,7 +143,24 @@ class HelpDesk:
         tk.Button(help_window, text="Close", command=help_window.destroy).pack(pady=10)
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = HelpDesk(root)
-    root.mainloop()
+    # FAQs function
+    def show_faqs(self):
+        faq_text = (
+            "\nFace Recognition Attendance System - FAQs\n"
+            "-------------------------------------------\n"
+            "1. What is this system?\n   - An automated system to mark attendance using facial recognition.\n\n"
+            "2. How does it work?\n   - Detects, encodes, and compares face features with stored data.\n\n"
+            "3. What libraries are used?\n   - OpenCV, face_recognition, Tkinter, PIL, etc.\n\n"
+            "4. How accurate is it?\n   - Typically 90%–98% under good conditions.\n\n"
+            "5. Is it secure?\n   - Fairly secure but can be improved with liveness detection.\n\n"
+            "6. Can it recognize multiple faces?\n   - Yes, in a single frame.\n\n"
+            "7. Where is attendance stored?\n   - CSV, Excel, or database like SQLite.\n\n"
+            "8. Can new users be added?\n   - Yes, by adding their images and encoding their faces.\n\n"
+            "9. Limitations?\n   - Sensitive to lighting, face angles, and image quality.\n\n"
+            "10. Can it be extended?\n   - Yes, with cloud, SMS, mobile apps, etc."
+        )
+        messagebox.showinfo("FAQs", faq_text)
+
+
+
+
