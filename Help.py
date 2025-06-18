@@ -163,4 +163,63 @@ class HelpDesk:
 
 
 
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from PIL import Image, ImageTk
+
+class AboutUs:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("About Us - Face Attendance Recognition System")
+        self.root.geometry("800x500")
+        self.root.configure(bg="#f0f0f0")
+
+        # Header
+        title = tk.Label(self.root, text="About Us", font=("Helvetica", 24, "bold"), bg="#f0f0f0", fg="#333")
+        title.pack(pady=20)
+
+        # Logo or Image (optional, use your logo if available)
+        try:
+            img = Image.open("logo.png")  # Replace with your image path
+            img = img.resize((100, 100), Image.ANTIALIAS)
+            self.logo_img = ImageTk.PhotoImage(img)
+            logo_label = tk.Label(self.root, image=self.logo_img, bg="#f0f0f0")
+            logo_label.pack()
+        except:
+            pass  # Skip if image not available
+
+        # System Info
+        info = """
+Face Attendance Recognition System
+Version: 1.0
+
+This system uses facial recognition technology to automate and 
+secure the attendance process for institutions and organizations.
+
+Key Features:
+- Real-time face detection and recognition
+- Automatic attendance marking
+- Data storage and retrieval
+- Developer and HelpDesk integration
+
+Developed by: Aditya Kumar & Team
+Project Type: School Project
+Technology: Python, OpenCV, Tkinter, PIL
+
+For any support, go to the Help section.
+
+© 2025 Face Attendance System. All rights reserved.
+        """
+        info_label = tk.Label(self.root, text=info, font=("Helvetica", 12), justify="left", bg="#f0f0f0", fg="#222")
+        info_label.pack(padx=30, pady=10, anchor="w")
+
+        # Close Button
+        close_btn = ttk.Button(self.root, text="Close", command=self.root.destroy)
+        close_btn.pack(pady=10)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AboutUs(root)
+    root.mainloop()
 
