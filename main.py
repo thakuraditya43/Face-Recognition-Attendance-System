@@ -1,3 +1,8 @@
+import tkinter as tk
+from tkinter import ttk,messagebox
+import tkinter.font as tkfont
+from PIL import Image,ImageTk
+from time import strftime
 
 from Student import Student
 from Face_Recognition import FaceDetector
