@@ -2,12 +2,16 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
+from datetime import datetime
 from tkcalendar import DateEntry
 
 from tkinter import messagebox
+import csv
+from tkinter import filedialog
 
 
 
+mydata=[]
 class Attendance:
     def __init__(self, root):
         self.root = root
@@ -235,7 +239,7 @@ class Attendance:
 
 
 
-        # Buttons
+        # Buttons frame
         style1 = ttk.Style()
         style1.configure("CustomL.TButton", font=("Arial", 10, "bold"), foreground="blue", )
 
@@ -244,7 +248,7 @@ class Attendance:
                                 width=18,style="CustomL.TButton")
         import_button.place(x=5,y=255)
 
-        export_button=ttk.Button(Class_student_frame,text="Export CSV",width=18,style="CustomL.TButton")
+        export_button=ttk.Button(Class_student_frame,text="Export CSV",command=self.exportCsv,width=18,style="CustomL.TButton")
         export_button.place(x=148,y=255)
 
         update_button=ttk.Button(Class_student_frame,text="Update",width=18,
@@ -273,7 +277,7 @@ class Attendance:
 #                                       Search Table
         # Search table frame
         table_frame=tk.Frame(right_frame,bd=2,bg="white",relief="ridge")
-        table_frame.place(relx=0.5, rely=0.5,anchor="center",width=575,height=470)
+        table_frame.place(x=10,y=5,width=575,height=470)
 
         # scroll bar
         scroll_x=ttk.Scrollbar(table_frame,orient="horizontal")
@@ -316,7 +320,7 @@ class Attendance:
         self.AttendanceReport_Table.pack(fill="both",expand=1)
 
 
-
+        self.AttendReportTable.bind("<ButtonRelease>",self.get_cursor)
 
 
 
@@ -400,3 +404,78 @@ if __name__ == "__main__":
     # root.config(bg="#f2f3f7")
     app = Attendance(root)
     root.mainloop()
+
+
+
+   #==================================Fetch Data===================
+    
+
+# def fetchData(self,rows):
+#     self.AttendenceReportTable>delete(*self.AttendenceReportTable.get_children())
+#     for i in rows:
+#         self.AttendenceReportTable.insert("",END,values=i)
+# # import csv
+# def inportCsv(self):
+#     global mydata
+#     mydata.clear() 
+#     fln = filedialog.askopenfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=[("CSV File", ".csv"), ("All Files", ".*")], parent=self.root)
+#     with open(fln) as myfile:
+#         csvread=csv.reader(myfile,delimiter=",")
+#         for i in csvreas:
+#             mydata.append(i)
+#         self.fetchData(mydata) 
+
+# #export csv
+
+               
+
+# def exportCsv(self):
+#     try:
+#         if len(mydata) < 1:
+#             messagebox.showerror("No Data", "No Data found to export", parent=self.root)
+#             return False
+
+#         fln = filedialog.asksaveasfilename(
+#             initialdir=os.getcwd(),
+#             title="Open CSV",
+#             filetypes=[("CSV File", ".csv"), ("All Files", ".*")],
+#             defaultextension=".csv",
+#             parent=self.root
+#         )
+
+#         if not fln:
+#             return  # User cancelled save dialog
+
+#         with open(fln, mode="w", newline="") as myfile:
+#             exp_write = csv.writer(myfile, delimiter=",")
+#             for i in mydata:
+#                 exp_write.writerow(i)  # Changed from exp_write.append(i)
+
+#         messagebox.showinfo("Data Export", f"Your data exported to {os.path.basename(fln)} successfully", parent=self.root)
+
+#     except Exception as es:
+#         messagebox.showerror("Error", f"Due To : {str(es)}", parent=self.root)
+
+# def get_cursor(self,event=""):
+#     cursor_row=self.AttendenceReportRable.focus()
+#     content=self.AttendenceReportTable.item(cursor_row)
+#     rows=content['values']
+#     self.var_atten_id.set(rows[0])
+#     self.var_atten_roll.set(rows[1])
+#     self.var_atten_name.set(rows[2])
+#     self.var_atten_dep.set(rows[3])
+#     self.var_atten_time.set(rows[4])
+#     self.var_atten_date.set(rows[5])
+#     self.var_atten_attendence.set(rows[6])
+
+
+
+
+# def reset_data(self): 
+#     self.var_atten_id.set("")
+#     self.var_atten_roll.set("")
+#     self.var_atten_name.set("")
+#     self.var_atten_dep.set("")
+#     self.var_atten_time.set("")
+#     self.var_atten_date.set("")
+#     self.var_atten_attendence.set("")
