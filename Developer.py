@@ -199,6 +199,70 @@ class DeveloperDetail:
                      font=("Calibri", 12),
                      bg="white", anchor="w").pack(anchor="w", padx=20, pady=2)
 
+
+
+def check_for_updates(self):
+    top = tk.Toplevel(self.root)
+    top.title("Checking for Updates")
+    top.geometry("400x150")
+    top.configure(bg="white")
+    top.resizable(False, False)
+
+    label = tk.Label(top, text="Checking for updates...", font=("Arial", 14), bg="white")
+    label.pack(pady=20)
+
+    progress = ttk.Progressbar(top, mode='indeterminate', length=300)
+    progress.pack(pady=10)
+    progress.start(10)  # Adjust speed if needed
+
+    def finish_check():
+        progress.stop()
+        top.destroy()
+        messagebox.showinfo("Updates", "No updates available at the moment.")
+
+    # Close after 30 seconds
+    top.after(30000, finish_check)
+
+
+def show_module_info(self):
+    import tkinter as tk
+    import PIL
+    import mysql.connector
+    import time
+    import tkcalendar
+    import cv2
+
+    # Module info as list of dicts
+    modules = [
+        {"name": "tkinter", "purpose": "GUI development", "version": tk.TkVersion},
+        {"name": "Pillow", "purpose": "Image processing", "version": PIL.__version__},
+        {"name": "mysql.connector", "purpose": "MySQL database connection", "version": mysql.connector.__version__},
+        {"name": "time", "purpose": "Time-based functions", "version": "built-in"},
+        {"name": "tkcalendar", "purpose": "Date selection calendar widget", "version": tkcalendar.__version__},
+        {"name": "OpenCV (cv2)", "purpose": "Computer vision and image processing", "version": cv2.__version__}
+    ]
+
+    # Create top-level window
+    top = tk.Toplevel(self.root)
+    top.title("Module Information")
+    top.geometry("600x350")
+    top.configure(bg="white")
+    top.resizable(False, False)
+
+    # Heading
+    tk.Label(top, text="Modules Used in the Project", font=("Helvetica", 16, "bold"), bg="white").pack(pady=10)
+
+    # Create table headers
+    headers = ["Module", "Purpose", "Version"]
+    for col, header in enumerate(headers):
+        tk.Label(top, text=header, font=("Helvetica", 12, "bold"), bg="lightgray", borderwidth=1, relief="solid", width=20).grid(row=1, column=col, padx=1, pady=1)
+
+    # Fill in module data
+    for i, module in enumerate(modules, start=2):
+        tk.Label(top, text=module["name"], bg="white", borderwidth=1, relief="solid", width=20).grid(row=i, column=0, padx=1, pady=1)
+        tk.Label(top, text=module["purpose"], bg="white", borderwidth=1, relief="solid", width=30).grid(row=i, column=1, padx=1, pady=1)
+        tk.Label(top, text=module["version"], bg="white", borderwidth=1, relief="solid", width=20).grid(row=i, column=2, padx=1, pady=1)
+
 # ------------- button creation function -------------- #
     def create_button(self, image_path, text, command, relx, rely):
         img = Image.open(image_path).resize((200, 200), Image.Resampling.LANCZOS)
