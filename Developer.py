@@ -7,7 +7,7 @@ from time import strftime
 
 
 class DeveloperDetail:
-    def __init__(self, root):
+    def _init_(self, root):
         self.root = root
         self.root.title("Face Recognition System")
         # Make the window start in fullscreen mode
@@ -85,58 +85,10 @@ class DeveloperDetail:
 
     # # -----------------------------------------------Creating Buttons-------------------------------------------#
 
-     # developers details button
-    import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
-
-class DeveloperDetail:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Developer Details")
-        self.root.geometry("800x600")
-        self.root.configure(bg="white")
-
-        title = tk.Label(self.root, text="DEVELOPERS", font=("Helvetica", 24, "bold"), bg="white", fg="green")
-        title.pack(pady=20)
-
-        # Scrollable Frame
-        canvas = tk.Canvas(self.root, bg="white", bd=0, highlightthickness=0)
-        frame = tk.Frame(canvas, bg="white")
-        scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        scrollbar.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-        canvas.create_window((0, 0), window=frame, anchor="nw")
-
-        frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
-        # Team data from image
-        team_members = [
-            {"name": "Aditya Kumar", "email": "aditya_24a12res813@iitp.ac.in"},
-            {"name": "Aditya Kumar", "email": "aditya_24a12res814@iitp.ac.in"},
-            {"name": "Aditya Kumar", "email": "aditya_24a12res1174@iitp.ac.in"},
-            {"name": "Akarsh Kumar", "email": "akarsh_24a12res827@iitp.ac.in"},
-            {"name": "Akash Kumar", "email": "akash_24a12res829@iitp.ac.in"},
-        ]
-
-        # Display each developer
-        for idx, dev in enumerate(team_members, start=1):
-            dev_frame = tk.Frame(frame, bg="white", pady=10, padx=10, bd=1, relief="solid")
-            dev_frame.pack(fill="x", padx=20, pady=5)
-
-            name_lbl = tk.Label(dev_frame, text=f"{idx}. {dev['name']}", font=("Helvetica", 14, "bold"), bg="white", anchor="w")
-            name_lbl.pack(fill="x")
-
-            email_lbl = tk.Label(dev_frame, text=dev["email"], font=("Helvetica", 12), bg="white", fg="blue", anchor="w")
-            email_lbl.pack(fill="x")
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    obj = DeveloperDetail(root)
-    root.mainloop()
-
+        # Developer details button
+        btn_details = self.create_button("sample images/developer.png", 
+                                        "Developer Details",
+                                        self.unavailabel, 0.15, 0.45)
         
 
 
@@ -225,7 +177,27 @@ if __name__ == "__main__":
         else:
             return
 
+    def show_team_info(self):
+        top = tk.Toplevel(self.root)
+        top.title("Team Members")
+        top.geometry("500x300")
+        top.configure(bg="white")
 
+        tk.Label(top, text="Team Members", font=("Times New Roman", 20, "bold"), bg="white", fg="black").pack(pady=10)
+
+        members = [
+            {"name": "Aditya Kumar", "email": "aditya_24a12res813@iitp.ac.in"},
+            {"name": "Aditya Kumar", "email": "aditya_24a12res814@iitp.ac.in"},
+            {"name": "Aditya Kumar", "email": "aditya_24a12res1174@iitp.ac.in"},
+            {"name": "Akarsh Kumar", "email": "akarsh_24a12res827@iitp.ac.in"},
+            {"name": "Akash Kumar",  "email": "akash_24a12res829@iitp.ac.in"},
+        ]
+
+        for idx, member in enumerate(members, start=1):
+            tk.Label(top,
+                     text=f"{idx}. {member['name']} — {member['email']}",
+                     font=("Calibri", 12),
+                     bg="white", anchor="w").pack(anchor="w", padx=20, pady=2)
 
 # ------------- button creation function -------------- #
     def create_button(self, image_path, text, command, relx, rely):
@@ -263,5 +235,3 @@ if __name__ == "__main__":
     # root.config(bg="#1C1C1C")
     app = DeveloperDetail(root)
     root.mainloop()
-
-
