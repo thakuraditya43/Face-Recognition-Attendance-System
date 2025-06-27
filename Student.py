@@ -1,11 +1,12 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
 from tkcalendar import DateEntry
 from tkinter import messagebox
 import mysql.connector
-
+import cv2
 
 
 class Student:
@@ -381,7 +382,7 @@ class Student:
         else:
             # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
             try:
-                conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                 my_cursor=conn.cursor()
                 my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(                                         
                 
@@ -410,7 +411,7 @@ class Student:
     # ========================= Fetch Data ========================== #
 
     def fetch_data(self):
-        conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+        conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
         my_cursor=conn.cursor()
         my_cursor.execute("select * from student")
         data=my_cursor.fetchall()
@@ -422,7 +423,56 @@ class Student:
             conn.commit()
         conn.close         
 
-
+    #=================== Generate data set or Take photo samples ==================== 
+    def generate_dataset(self): 
+         if (
+        self.var_dep.get() == "Select Department" or
+        self.var_course.get() == "Select Course" or
+        self.var_year.get() == "Select Year" or
+        self.var_sem.get() == "Select Semester" or
+        self.var_std_id.get() == "" or
+        self.var_std_name.get() == "" or
+        self.var_batch.get() == "" or
+        self.var_roll.get() == "" or
+        self.var_gender.get() == "Select Gender" or
+        self.var_dob.get() == "" or
+        self.var_email.get() == "" or
+        self.var_phn.get() == "" 
+        or self.var_radio.get()==""
+            ):
+            messagebox.showerror("Error", "All fields are required", parent=self.root)
+        # elif self.var_radio.get() == "no":  
+        #     messagebox.showwarning("Action Required", "You have selected 'Do Not Take Photo Sample'.\nPlease select 'Take Photo Sample' to proceed.",parent=self.root)
+        else:
+            # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
+            try:
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+                my_cursor=conn.cursor()
+                my_cursor.execute("seclect * from student")
+                my result=my_curser.fetchall()
+                id=0
+                for * myresult:
+                    id+=1
+                my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
+                    "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
+                        self.var_dep.get(),
+                        self.var_course.get(),
+                        self.var_year.get(),
+                        self.var_sem.get(),
+                        self.var_std_name.get(),
+                        self.var_batch.get(),
+                        self.var_roll.get(),
+                        self.var_gender.get(),
+                        self.var_dob.get(),
+                        self.var_email.get(),
+                        self.var_phn.get(),
+                        self.var_radio.get(),
+                        self.var_std_id.get()
+                    ))                                                                        
+                conn.commit()
+                self.fetch_data()
+                self.reset_data()
+                conn.close()    
 
     # ------------get cursor-------
     def get_cursor(self,event=None):
@@ -484,7 +534,7 @@ class Student:
             try:
                 update = messagebox.askyesno("Update","Do you want to update this student details")
                 if update>0:
-                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                     my_cursor=conn.cursor()
                     my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
                     "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
@@ -519,7 +569,7 @@ class Student:
             try:
                 delete = messagebox.askyesno("Delete data","Do you want to delete this student details")
                 if delete>0:
-                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                     my_cursor=conn.cursor()
                     sql="delete from student where S_ID=%s"
                     val=(self.var_std_id.get(),)
