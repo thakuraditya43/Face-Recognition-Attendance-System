@@ -1,11 +1,12 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
 from tkcalendar import DateEntry
 from tkinter import messagebox
 import mysql.connector
-
+import cv2
 
 
 class Student:
@@ -254,7 +255,7 @@ class Student:
                                 command=self.reset_data)
         reset_button.place(relx=0.751, rely=0.89)
 
-        take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
+        take_pic_button=ttk.Button(left_frame,command=self.generate_dataset,text="Take Photo Sample",width=35,style="CustomL.TButton")
         take_pic_button.place(relx=0.25, rely=0.85,anchor="center")
 
         update_pic_button=ttk.Button(left_frame,text="Update Photo Sample",width=35,style="CustomL.TButton")
@@ -381,7 +382,7 @@ class Student:
         else:
             # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
             try:
-                conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                 my_cursor=conn.cursor()
                 my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(                                         
                 
@@ -410,7 +411,7 @@ class Student:
     # ========================= Fetch Data ========================== #
 
     def fetch_data(self):
-        conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+        conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
         my_cursor=conn.cursor()
         my_cursor.execute("select * from student")
         data=my_cursor.fetchall()
@@ -422,7 +423,91 @@ class Student:
             conn.commit()
         conn.close         
 
+    #=================== Generate data set or Take photo samples ====================# 
+    def generate_dataset(self): 
+         if (
+        self.var_dep.get() == "Select Department" or
+        self.var_course.get() == "Select Course" or
+        self.var_year.get() == "Select Year" or
+        self.var_sem.get() == "Select Semester" or
+        self.var_std_id.get() == "" or
+        self.var_std_name.get() == "" or
+        self.var_batch.get() == "" or
+        self.var_roll.get() == "" or
+        self.var_gender.get() == "Select Gender" or
+        self.var_dob.get() == "" or
+        self.var_email.get() == "" or
+        self.var_phn.get() == "" 
+        or self.var_radio.get()==""
+            ):
+            messagebox.showerror("Error", "All fields are required", parent=self.root)
+        # elif self.var_radio.get() == "no":  
+        #     messagebox.showwarning("Action Required", "You have selected 'Do Not Take Photo Sample'.\nPlease select 'Take Photo Sample' to proceed.",parent=self.root)
+        else:
+            # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
+            try:
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+                my_cursor=conn.cursor()
+                my_cursor.execute("select * from student")
+                myresult=my_curser.fetchall()
+                id=0
+                for * myresult:
+                    id+=1
+                my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
+                    "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
+                        self.var_dep.get(),
+                        self.var_course.get(),
+                        self.var_year.get(),
+                        self.var_sem.get(),
+                        self.var_std_name.get(),
+                        self.var_batch.get(),
+                        self.var_roll.get(),
+                        self.var_gender.get(),
+                        self.var_dob.get(),
+                        self.var_email.get(),
+                        self.var_phn.get(),
+                        self.var_radio.get(),
+                        self.var_std_id.get()==id+1
+                    ))                                                                        
+                conn.commit()
+                self.fetch_data()
+                self.reset_data()
+                conn.close()  
 
+                 #-------------------Load predefined data on face frontals from opencv------------------#  
+                    
+                face_classifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+                def face_cropped(img):
+                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    faces = face_classifier.detectMultiScale(gray, 1.3, 5)
+                    #scaling factor is 1.3 and minimum neighbor is 5
+                    
+                
+                    for (x,y,w,h) in faces:
+                        cropped_face = img[y:y+h, x:x+w]
+                        return cropped_face
+
+                cap = cv2.VideoCapture(0)  # 0 for the default camera
+                img_id = 0
+                while True:
+                    ret, frame = cap.read()
+                    if cropped_face (frame)is  not None:
+                        img_id += 1
+                        face=cv2.resize(frame, (450, 450))  # Resize frame to 450x450 pixels
+                        face=cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)  # Convert color from BGR to grayscale
+                        file_name_path ="data/user." + str(id) + "." + str(img_id) + ".jpg"
+                        cv2.imwrite(file_name_path, face)  # Save the cropped face image
+                        cv2.putText(face,str(img_id),(50,50) cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                        cv2.imshow("Cropped Face", face)  # Display the cropped face
+
+                    if cv2.waitKey(1) == 13 or img_id == 100:  # Press 'q' to exit or after capturing 100 images
+                        break
+                cap.release()  # Release the camera
+                cv2.destroyAllWindows()  # Close all OpenCV windows
+                messagebox.showinfo("Success","Data has been saved successfully",parent=self.root)    
+                        
+            except Exception as es:
+                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)            
 
     # ------------get cursor-------
     def get_cursor(self,event=None):
@@ -484,7 +569,7 @@ class Student:
             try:
                 update = messagebox.askyesno("Update","Do you want to update this student details")
                 if update>0:
-                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                     my_cursor=conn.cursor()
                     my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
                     "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
@@ -519,7 +604,7 @@ class Student:
             try:
                 delete = messagebox.askyesno("Delete data","Do you want to delete this student details")
                 if delete>0:
-                    conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                    conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                     my_cursor=conn.cursor()
                     sql="delete from student where S_ID=%s"
                     val=(self.var_std_id.get(),)
@@ -585,9 +670,6 @@ class Student:
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-
-
-
 
 
 if __name__ == "__main__":
