@@ -255,7 +255,7 @@ class Student:
                                 command=self.reset_data)
         reset_button.place(relx=0.751, rely=0.89)
 
-        take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
+        take_pic_button=ttk.Button(left_frame,command=self.generate_dataset,text="Take Photo Sample",width=35,style="CustomL.TButton")
         take_pic_button.place(relx=0.25, rely=0.85,anchor="center")
 
         update_pic_button=ttk.Button(left_frame,text="Update Photo Sample",width=35,style="CustomL.TButton")
@@ -423,7 +423,7 @@ class Student:
             conn.commit()
         conn.close         
 
-    #=================== Generate data set or Take photo samples ==================== 
+    #=================== Generate data set or Take photo samples ====================# 
     def generate_dataset(self): 
          if (
         self.var_dep.get() == "Select Department" or
@@ -448,8 +448,8 @@ class Student:
             try:
                 conn = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
                 my_cursor=conn.cursor()
-                my_cursor.execute("seclect * from student")
-                my result=my_curser.fetchall()
+                my_cursor.execute("select * from student")
+                myresult=my_curser.fetchall()
                 id=0
                 for * myresult:
                     id+=1
@@ -467,12 +467,47 @@ class Student:
                         self.var_email.get(),
                         self.var_phn.get(),
                         self.var_radio.get(),
-                        self.var_std_id.get()
+                        self.var_std_id.get()==id+1
                     ))                                                                        
                 conn.commit()
                 self.fetch_data()
                 self.reset_data()
-                conn.close()    
+                conn.close()  
+
+                 #-------------------Load predefined data on face frontals from opencv------------------#  
+                    
+                face_classifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+                def face_cropped(img):
+                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    faces = face_classifier.detectMultiScale(gray, 1.3, 5)
+                    #scaling factor is 1.3 and minimum neighbor is 5
+                    
+                
+                    for (x,y,w,h) in faces:
+                        cropped_face = img[y:y+h, x:x+w]
+                        return cropped_face
+
+                cap = cv2.VideoCapture(0)  # 0 for the default camera
+                img_id = 0
+                while True:
+                    ret, frame = cap.read()
+                    if cropped_face (frame)is  not None:
+                        img_id += 1
+                        face=cv2.resize(frame, (450, 450))  # Resize frame to 450x450 pixels
+                        face=cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)  # Convert color from BGR to grayscale
+                        file_name_path ="data/user." + str(id) + "." + str(img_id) + ".jpg"
+                        cv2.imwrite(file_name_path, face)  # Save the cropped face image
+                        cv2.putText(face,str(img_id),(50,50) cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                        cv2.imshow("Cropped Face", face)  # Display the cropped face
+
+                    if cv2.waitKey(1) == 13 or img_id == 100:  # Press 'q' to exit or after capturing 100 images
+                        break
+                cap.release()  # Release the camera
+                cv2.destroyAllWindows()  # Close all OpenCV windows
+                messagebox.showinfo("Success","Data has been saved successfully",parent=self.root)    
+                        
+            except Exception as es:
+                messagebox.showerror("Error",f"Due To :{str(es)}",parent=self.root)            
 
     # ------------get cursor-------
     def get_cursor(self,event=None):
@@ -635,9 +670,6 @@ class Student:
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-
-
-
 
 
 if __name__ == "__main__":
