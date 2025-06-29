@@ -3,6 +3,7 @@ from tkinter import ttk,messagebox
 import tkinter.font as tkfont
 from PIL import Image,ImageTk
 from time import strftime
+import os 
 
 from Student import Student
 from Face_Recognition import FaceDetector
@@ -181,14 +182,14 @@ class Face_Recognition_System:
         self.app = FaceDetector(self.root)
         self.app.detect_face()  # Run the face_recognition method directly
 
+
     def train_data(self):
         self.app = TrainData(self.root)
         self.app.train_model()  # Run the training method directly
 
 
-
     def open_gallery(self):
-        messagebox.showinfo("Photo Gallery", "Gallery access not yet implemented.")
+        os.startfile("face_img")
 
 
     # Exit Button
