@@ -494,7 +494,6 @@ class Student:
                     ))                                                                        
                 conn.commit()
                 self.fetch_data()
-                self.reset_data()
                 conn.close()  
 
                 #-------------------Load predefined data on face frontals from opencv------------------#  
@@ -507,7 +506,7 @@ class Student:
                     faces = face_classifier.detectMultiScale(gray, scaleFactor=1.3,minNeighbors= 5,minSize=(30,30),flags=cv2.CASCADE_SCALE_IMAGE)
                     for (x,y,w,h) in faces:
                         # cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-                        return img[y:y+h, x:x+w]
+                        return img[y:y+h+15, x:x+w+10]
                     return None
 
 
@@ -518,9 +517,11 @@ class Student:
                     cropped = face_cropped (my_frame)
                     if cropped is  not None:
                         img_id += 1
-                        face=cv2.resize(my_frame, (450, 450))  # Resize frame to 450x450 pixels
+                        face=cv2.resize(cropped, (450, 450))  # Resize frame to 450x450 pixels
                         face=cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)  # Convert color from BGR to grayscale
-                        file_name_path ="face_img/user." + str(id) + "." + str(img_id) +".jpg"
+                        custom_name = f"{self.var_std_id.get()}_{img_id}.jpg"
+                        file_name_path = f"face_img/{custom_name}"
+                        # file_name_path ="face_img/user." + str(id) + "." + str(img_id) +".jpg"
                         cv2.imwrite(file_name_path, face)  # Save the cropped face image
                         cv2.putText(face,str(img_id),(50,50) ,cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
                         cv2.imshow("Cropped Face", face)  # Display the cropped face
@@ -529,6 +530,7 @@ class Student:
                         break
                 video_cap.release()  # Release the camera
                 cv2.destroyAllWindows()  # Close all OpenCV windows
+                self.reset_data()
                 messagebox.showinfo("Success","Data has been saved successfully",parent=self.root)
 
                 # threading.Thread(target=run_camera, daemon=True).start()

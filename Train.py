@@ -25,13 +25,12 @@ class TrainData:
             imageNP = np.array(img,"uint8")
             # id = int(os.path.split(image)[1].split(('.')[1]))
 
-            filename = os.path.split(image)[1]
-            parts = filename.split('.')
+            filename = os.path.basename(image)
+            student_id = filename.split('_')[0]
 
-            if len(parts) >= 3 and parts[0] == "user":
-                id = int(parts[1])
-                # Continue with training
-            else:
+            try:
+                id = int(student_id.replace("IITP", ""))  # Extract numeric part only
+            except ValueError:
                 print(f"Skipping malformed file: {filename}")
                 continue
 
