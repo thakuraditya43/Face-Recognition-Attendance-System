@@ -68,7 +68,7 @@
                     cv2.destroyAllWindows()
 
         if __name__ == "__main__":
-            root = tk
+            root = tk()
             obj = face_recog(root)
             root.mainloop()
 
