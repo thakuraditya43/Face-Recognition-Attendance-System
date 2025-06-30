@@ -1,11 +1,12 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 from time import strftime
 from tkcalendar import DateEntry
 from tkinter import messagebox
 import mysql.connector
-
+import cv2
 
 
 class Student:
@@ -99,12 +100,6 @@ class Student:
 
 
 
-
-        # # Fram
-        # main_frame = Frame(self.root,bd=3)
-        # main_frame.place(x=10,y=180,width=1260,height=540)
-
-
         # Left label frame
         left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Details",font=("Times New Roman",20,"bold"),labelanchor="n")
         left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.7,anchor="center")
@@ -182,6 +177,7 @@ class Student:
         batch_label=tk.Label(Class_student_frame,text="Batch:",font=("Times New Roman",15,"bold"),bg="white")
         batch_label.grid(row=1,column=0,pady=3,sticky="w")
 
+        # class division label & Entry
         batch_combo=ttk.Combobox(Class_student_frame,width=13,
                                     textvariable=self.var_batch,
                                     font=("Times New Roman",12),
@@ -201,7 +197,7 @@ class Student:
         gen_label=tk.Label(Class_student_frame,text="Gender:",font=("Times New Roman",15,"bold"),bg="white")
         gen_label.grid(row=2,column=0,pady=3,sticky="w")
 
-        gen_combo=ttk.Combobox(Class_student_frame,textvariable=self.var_gender,font=("Times New Roman",12),width=13,state="readonly",background='darkblue')
+        gen_combo=ttk.Combobox(Class_student_frame,textvariable=self.var_gender,font=("Times New Roman",12),width=13,state="readonly",)
         gen_combo["values"]=("Select Gender","Male","Female","Others")
         gen_combo.current(0)
         gen_combo.grid(row=2,column=1,padx=3,pady=3,sticky="w")
@@ -254,7 +250,7 @@ class Student:
                                 command=self.reset_data)
         reset_button.place(relx=0.751, rely=0.89)
 
-        take_pic_button=ttk.Button(left_frame,text="Take Photo Sample",width=35,style="CustomL.TButton")
+        take_pic_button=ttk.Button(left_frame,command=self.generate_dataset,text="Take Photo Sample",width=35,style="CustomL.TButton")
         take_pic_button.place(relx=0.25, rely=0.85,anchor="center")
 
         update_pic_button=ttk.Button(left_frame,text="Update Photo Sample",width=35,style="CustomL.TButton")
@@ -420,30 +416,127 @@ class Student:
             for i in data:
                 self.student_table.insert("",tk.END,values=i)
             conn.commit()
-        conn.close         
-
+        conn.close()         
 
 
     # ------------get cursor-------
-    def get_cursor(self,event=None):
+    def get_cursor(self, event=None):
         cursor_focus = self.student_table.focus()
-        content = self.student_table.item(cursor_focus)
-        data= content["values"]
-        
-        self.var_dep.set(data[0]),
-        self.var_course.set(data[1]),
-        self.var_year.set(data[2]),
-        self.var_sem.set(data[3]),
-        self.var_std_id.set(data[4]),
-        self.var_std_name.set(data[5]),
-        self.var_batch.set(data[6]),
-        self.var_roll.set(data[7]),
-        self.var_gender.set(data[8]),
-        self.var_dob.set(data[9]),
-        self.var_email.set(data[10]),
-        self.var_phn.set(data[11]),
-        self.var_radio.set(data[12]),
+        if not cursor_focus:
+            return  # nothing selected
 
+        content = self.student_table.item(cursor_focus)
+        data = content.get("values", [])
+
+        if len(data) != 13:  # you expect 13 fields in each row
+            return
+
+        self.var_dep.set(data[0])
+        self.var_course.set(data[1])
+        self.var_year.set(data[2])
+        self.var_sem.set(data[3])
+        self.var_std_id.set(data[4])
+        self.var_std_name.set(data[5])
+        self.var_batch.set(data[6])
+        self.var_roll.set(data[7])
+        self.var_gender.set(data[8])
+        self.var_dob.set(data[9])
+        self.var_email.set(data[10])
+        self.var_phn.set(data[11])
+        self.var_radio.set(data[12])
+
+
+    #=================== Generate data set or Take photo samples ====================# 
+    def generate_dataset(self): 
+        if (
+        self.var_dep.get() == "Select Department" or
+        self.var_course.get() == "Select Course" or
+        self.var_year.get() == "Select Year" or
+        self.var_sem.get() == "Select Semester" or
+        self.var_std_id.get() == "" or
+        self.var_std_name.get() == "" or
+        self.var_batch.get() == "" or
+        self.var_roll.get() == "" or
+        self.var_gender.get() == "Select Gender" or
+        self.var_dob.get() == "" or
+        self.var_email.get() == "" or
+        self.var_phn.get() == "" 
+        or self.var_radio.get()==""
+            ):
+            messagebox.showerror("Error", "All fields are required", parent=self.root)
+        elif self.var_radio.get() == "no":  
+            messagebox.showwarning("Action Required", "You have selected 'Do Not Take Photo Sample'.\nPlease select 'Take Photo Sample' to proceed.",parent=self.root)
+        else:
+            # messagebox.showinfo("Wait!","Data is saving",parent=self.root)
+            try:
+                conn = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
+                my_cursor=conn.cursor()
+                my_cursor.execute("select * from student")
+                myresult = my_cursor.fetchall()
+                id=0
+                for x in myresult:
+                    id+=1
+                my_cursor.execute("update student set department=%s,course=%s,year=%s,semester=%s," \
+                    "Name=%s,batch=%s,roll=%s,gen=%s,dob=%s,email=%s,phn=%s,photo=%s where S_ID=%s",(
+                        self.var_dep.get(),
+                        self.var_course.get(),
+                        self.var_year.get(),
+                        self.var_sem.get(),
+                        self.var_std_name.get(),
+                        self.var_batch.get(),
+                        self.var_roll.get(),
+                        self.var_gender.get(),
+                        self.var_dob.get(),
+                        self.var_email.get(),
+                        self.var_phn.get(),
+                        self.var_radio.get(),
+                        self.var_std_id.get()
+                    ))                                                                        
+                conn.commit()
+                self.fetch_data()
+                conn.close()  
+
+                #-------------------Load predefined data on face frontals from opencv------------------#  
+                    
+                face_classifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+                video_cap = cv2.VideoCapture(0)  # 0 for the default camera
+                img_id = 0
+                def face_cropped(img):
+                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    faces = face_classifier.detectMultiScale(gray, scaleFactor=1.3,minNeighbors= 5,minSize=(30,30),flags=cv2.CASCADE_SCALE_IMAGE)
+                    for (x,y,w,h) in faces:
+                        # cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+                        return img[y:y+h+15, x:x+w+10]
+                    return None
+
+
+                # def run_camera():
+                while True:
+
+                    ret, my_frame = video_cap.read()
+                    cropped = face_cropped (my_frame)
+                    if cropped is  not None:
+                        img_id += 1
+                        face=cv2.resize(cropped, (450, 450))  # Resize frame to 450x450 pixels
+                        face=cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)  # Convert color from BGR to grayscale
+                        custom_name = f"{self.var_std_id.get()}_{img_id}.jpg"
+                        file_name_path = f"face_img/{custom_name}"
+                        # file_name_path ="face_img/user." + str(id) + "." + str(img_id) +".jpg"
+                        cv2.imwrite(file_name_path, face)  # Save the cropped face image
+                        cv2.putText(face,str(img_id),(50,50) ,cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
+                        cv2.imshow("Cropped Face", face)  # Display the cropped face
+
+                    if cv2.waitKey(1) == 13 or img_id == 100:  # Press 'q' to exit or after capturing 100 images
+                        break
+                video_cap.release()  # Release the camera
+                cv2.destroyAllWindows()  # Close all OpenCV windows
+                self.reset_data()
+                messagebox.showinfo("Success","Data has been saved successfully",parent=self.root)
+
+                # threading.Thread(target=run_camera, daemon=True).start()
+                
+            except Exception as es:
+                messagebox.showerror("Error",f"Due To: {str(es)}",parent=self.root)            
 
 # ========== Button Function ================= #
 
@@ -585,9 +678,6 @@ class Student:
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-
-
-
 
 
 if __name__ == "__main__":
