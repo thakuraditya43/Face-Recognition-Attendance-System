@@ -271,7 +271,7 @@ Once registered, you’ll be able to:
         elif self.var_check.get() == 0 :
             messagebox.showwarning("Action Required","Please accept Terms & Conditions to continue.")
         else:
-            connect = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+            connect = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
             my_cursor=connect.cursor()
             query=("select * from registration where ID=%s")
             value=(self.var_ID.get(),)

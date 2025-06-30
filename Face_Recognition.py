@@ -6,6 +6,8 @@ class FaceDetector:
         print("Face detector initialized with root window")
 
     def detect_face(self):
+
+
         print("Face recognition training in progress...")
         messagebox.showinfo("Train Face Data", "Face recognition training module is not yet implemented.")
         # TODO: Add face recognition training logic here

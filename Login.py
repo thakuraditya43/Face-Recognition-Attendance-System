@@ -252,7 +252,7 @@ class Log_in:
         # elif ( or self.pwd_entry.get() == ""):
         #     pass
         else:
-            connect = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+            connect = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
             my_cursor=connect.cursor()
             my_cursor.execute("select * from registration where ID=%s and Password=%s",(
                 self.user_entry.get(),self.pwd_entry.get()
@@ -272,7 +272,7 @@ class Log_in:
         if self.user_entry.get() == "":
             messagebox.showerror("Error","Please enter Username to reset password")
         else:
-            connect = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+            connect = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
             my_cursor=connect.cursor()
             query = ("select F_name, Question, Answer from registration where ID=%s")
             Value=(self.user_entry.get(),)
@@ -393,7 +393,7 @@ class Log_in:
             messagebox.showerror("404 Error","Security Question's Answer entered is wrong",parent=self.win)
         else:
             pass
-            connect = mysql.connector.connect(host='localhost', user='root', password= 'Shivani@1012',database='face-recognition-attendance-system')
+            connect = mysql.connector.connect(host='localhost', user='root', password= 'P@ssword4SQL',database='face-recognition-attendance-system')
             my_cursor=connect.cursor()
             query=("update registration set Password=%s where ID=%s")
             value=(self.P_entry.get(),self.user_entry.get(),)
