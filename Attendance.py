@@ -1,17 +1,15 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,messagebox
 from PIL import Image,ImageTk
 from time import strftime
 from datetime import datetime
 from tkcalendar import DateEntry
-
-from tkinter import messagebox
-import csv
 from tkinter import filedialog
+import os
+import csv
 
+mydata=[]   # List to store attendance data imported from or to be exported as CSV
 
-
-mydata=[]
 class Attendance:
     def __init__(self, root):
         self.root = root
@@ -35,7 +33,7 @@ class Attendance:
         self.attendance_var=tk.StringVar()
 
 
-        # Load and Display bg img
+        # Load and display background images
         img_bg = Image.open(r"sample images\Background image.jpg")
         img_bg = img_bg.resize((self.root.winfo_screenwidth(), self.root.winfo_screenheight()), 
                                     Image.Resampling.LANCZOS)
@@ -58,7 +56,7 @@ class Attendance:
 
 
 
-        # title
+        # Create and configure the title and Home button
         Lbl_title=tk.Label(self.root, 
                             text="Attendance Management System",
                             font= ("Monotype Corsiva", 35, "bold") if "Monotype Corsiva" in tk.font.families() else ("Times New Roman", 35, "bold"), 
@@ -100,14 +98,7 @@ class Attendance:
 
 
 
-
-        # # Fram
-        # main_frame = Frame(self.root,bd=3)
-        # main_frame.place(x=10,y=180,width=1260,height=540)
-
-
-
-        # Left label frame
+        # Left frame for student attendance entry form
         left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Attendance Details",font=("Times New Roman",20,"bold"),labelanchor="n")
         left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.65,anchor="center")
 
@@ -117,7 +108,6 @@ class Attendance:
 
         img_leftF_lbl = tk.Label(left_frame, image=self.photo_leftF)
         img_leftF_lbl.place(relx=0.5, rely=0.15,anchor="center", width=580, height=130)
-
 
 
 
@@ -239,20 +229,20 @@ class Attendance:
 
 
 
-        # Buttons frame
+        # Buttons to import, export, update, and reset attendance data
         style1 = ttk.Style()
         style1.configure("CustomL.TButton", font=("Arial", 10, "bold"), foreground="blue", )
 
         import_button=ttk.Button(Class_student_frame,text="Import CSV",
-                                # command=self.add_data,
-                                width=18,style="CustomL.TButton")
+                    command=self.importCSV,width=18,style="CustomL.TButton")
         import_button.place(x=5,y=255)
 
-        export_button=ttk.Button(Class_student_frame,text="Export CSV",command=self.exportCsv,width=18,style="CustomL.TButton")
+        export_button=ttk.Button(Class_student_frame,text="Export CSV",width=18,
+                                command=self.exportCSV,style="CustomL.TButton")
         export_button.place(x=148,y=255)
 
         update_button=ttk.Button(Class_student_frame,text="Update",width=18,
-                                    style="CustomL.TButton")
+                                    style="CustomL.TButton",command=self.update_data)
         update_button.place(x=292,y=255)
 
         reset_button=ttk.Button(Class_student_frame,text="Reset",width=18,style="CustomL.TButton",
@@ -261,18 +251,10 @@ class Attendance:
 
 
 
-
-
-        # Right label frame
+        # Right frame for displaying the attendance report in a table
         right_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Attendance Details",font=("Times New Roman",20,"bold"),labelanchor='n')
         right_frame.place(relx=0.75,rely=0.6,relwidth=0.469, relheight=0.65,anchor='center')
 
-        # img_rightF = Image.open("sample images/black.png")
-        # img_rightF = img_rightF.resize((580,130), Image.Resampling.LANCZOS)
-        # self.photo_rightF = ImageTk.PhotoImage(img_rightF)
-
-        # img_rightF_lbl = Label(right_frame, image=self.photo_rightF)
-        # img_rightF_lbl.place(x=10, y=0, width=580, height=130)
 
 #                                       Search Table
         # Search table frame
@@ -319,14 +301,98 @@ class Attendance:
 
         self.AttendanceReport_Table.pack(fill="both",expand=1)
 
-
-        self.AttendReportTable.bind("<ButtonRelease>",self.get_cursor)
-
-
+        # Bind event to fill form when a row is selected
+        self.AttendanceReport_Table.bind("<ButtonRelease>",self.get_cursor)
 
 
 
+    # ==================================Fetch Data===================
+    
+    # Display provided rows of attendance data in the table
+    def fetchData(self,rows):
+        self.AttendanceReport_Table.delete(*self.AttendanceReport_Table.get_children())
+        for i in rows:
+            self.AttendanceReport_Table.insert("",tk.END,values=i)
 
+
+    # Open a file dialog to import attendance data from a CSV file
+    def importCSV(self):
+        global mydata
+        mydata.clear() 
+        fln = filedialog.askopenfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=(("CSV File", "*.csv"), ("All Files", "*.*")), parent=self.root)
+        if not fln:
+            return
+        with open(fln) as myfile:
+            csvread=csv.reader(myfile,delimiter=",")
+            for i in csvread:
+                mydata.append(i)
+            self.fetchData(mydata) 
+
+
+    # Export current attendance data to a CSV file
+    def exportCSV(self):
+        try:
+            if len(mydata) < 1:
+                messagebox.showerror("No Data", "No Data found to export.", parent=self.root)
+                return False
+            fln = filedialog.asksaveasfilename(initialdir=os.getcwd(),title="Open CSV",
+                filetypes=[("CSV File", ".csv"), ("All Files", ".*")],defaultextension=".csv",
+                parent=self.root)
+            if not fln:
+                return  # User cancelled save dialog
+            with open(fln, mode="w", newline="") as myfile:
+                exp_write = csv.writer(myfile, delimiter=",")
+                for i in mydata:
+                    exp_write.writerow(i)  # Changed from exp_write.append(i)
+            messagebox.showinfo("Export Successful", "Attendance data has been exported successfully.", parent=self.root)
+        except Exception as es:
+            messagebox.showerror("Export Failed", f"Failed to export data.\nReason: {str(es)}", parent=self.root)
+
+
+# Fills entry fields with selected row data from the table
+    def get_cursor(self,event=""):
+        cursor_row=self.AttendanceReport_Table.focus()
+        content=self.AttendanceReport_Table.item(cursor_row)
+        rows=content['values']
+        self.std_id_var.set(rows[0])
+        self.std_name_var.set(rows[1])
+        self.dep_var.set(rows[2])
+        self.course_var.set(rows[3])
+        self.sem_var.set(rows[4])
+        self.batch_var.set(rows[5])
+        self.date_var.set(rows[6])
+        self.time_var.set(rows[7])
+        self.attendance_var.set(rows[8])
+
+
+    # Update selected student data and save to a new CSV
+    def update_data(self):
+        updated = False
+        for index, row in enumerate(mydata):
+            if row[0] == self.std_id_var.get():
+                mydata[index] = [
+                    self.std_id_var.get(), self.std_name_var.get(), self.dep_var.get(),
+                    self.course_var.get(), self.sem_var.get(), self.batch_var.get(),
+                    self.date_var.get(), self.time_var.get(), self.attendance_var.get()
+                ]
+                updated = True
+                break
+        if updated:
+            self.fetchData(mydata)
+            try:
+                fln = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Save Updated CSV", filetypes=[("CSV File", "*.csv")], defaultextension=".csv", parent=self.root)
+                if fln:
+                    with open(fln, mode="w", newline="") as f:
+                        writer = csv.writer(f)
+                        writer.writerows(mydata)
+                    messagebox.showinfo("Update Successful", "Attendance record has been updated and saved successfully.", parent=self.root)
+            except Exception as e:
+                messagebox.showerror("Update Failed", f"Unable to updated file.\nReason: {str(e)}", parent=self.root)
+        else:
+            messagebox.showerror("Update Failed", "No matching Student ID found in the file.", parent=self.root)
+
+
+    # Clear all entry fields in the attendance form
     def reset_data(self):
         self.std_id_var.set("")
         self.std_name_var.set("")
@@ -339,11 +405,7 @@ class Attendance:
         self.attendance_var.set("Select Status")
 
 
-
-
-
-
-
+    # Update course dropdown based on selected department
     def update_course_options(self, event=None):
         """
         Updates the course combobox options based on the selected department.
@@ -368,7 +430,6 @@ class Attendance:
 
 
 
-
     def toggle_fullscreen(self):
         """Toggle between fullscreen and maximized mode"""
         if self.root.attributes('-fullscreen'):  # If currently fullscreen
@@ -376,8 +437,6 @@ class Attendance:
             self.root.state('zoomed')  # Maximize window to fit screen
         else:
             self.root.attributes('-fullscreen', True)  # Go back to fullscreen
-
-
 
 
 
@@ -389,13 +448,9 @@ class Attendance:
 
 
 
-
-
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-
-
 
 
 
@@ -404,78 +459,3 @@ if __name__ == "__main__":
     # root.config(bg="#f2f3f7")
     app = Attendance(root)
     root.mainloop()
-
-
-
-   #==================================Fetch Data===================
-    
-
-# def fetchData(self,rows):
-#     self.AttendenceReportTable>delete(*self.AttendenceReportTable.get_children())
-#     for i in rows:
-#         self.AttendenceReportTable.insert("",END,values=i)
-# # import csv
-# def inportCsv(self):
-#     global mydata
-#     mydata.clear() 
-#     fln = filedialog.askopenfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=[("CSV File", ".csv"), ("All Files", ".*")], parent=self.root)
-#     with open(fln) as myfile:
-#         csvread=csv.reader(myfile,delimiter=",")
-#         for i in csvreas:
-#             mydata.append(i)
-#         self.fetchData(mydata) 
-
-# #export csv
-
-               
-
-# def exportCsv(self):
-#     try:
-#         if len(mydata) < 1:
-#             messagebox.showerror("No Data", "No Data found to export", parent=self.root)
-#             return False
-
-#         fln = filedialog.asksaveasfilename(
-#             initialdir=os.getcwd(),
-#             title="Open CSV",
-#             filetypes=[("CSV File", ".csv"), ("All Files", ".*")],
-#             defaultextension=".csv",
-#             parent=self.root
-#         )
-
-#         if not fln:
-#             return  # User cancelled save dialog
-
-#         with open(fln, mode="w", newline="") as myfile:
-#             exp_write = csv.writer(myfile, delimiter=",")
-#             for i in mydata:
-#                 exp_write.writerow(i)  # Changed from exp_write.append(i)
-
-#         messagebox.showinfo("Data Export", f"Your data exported to {os.path.basename(fln)} successfully", parent=self.root)
-
-#     except Exception as es:
-#         messagebox.showerror("Error", f"Due To : {str(es)}", parent=self.root)
-
-# def get_cursor(self,event=""):
-#     cursor_row=self.AttendenceReportRable.focus()
-#     content=self.AttendenceReportTable.item(cursor_row)
-#     rows=content['values']
-#     self.var_atten_id.set(rows[0])
-#     self.var_atten_roll.set(rows[1])
-#     self.var_atten_name.set(rows[2])
-#     self.var_atten_dep.set(rows[3])
-#     self.var_atten_time.set(rows[4])
-#     self.var_atten_date.set(rows[5])
-#     self.var_atten_attendence.set(rows[6])
-
-
-
-
-# def reset_data(self): 
-#     self.var_atten_id.set("")
-#     self.var_atten_roll.set("")
-#     self.var_atten_name.set("")
-#     self.var_atten_dep.set("")
-#     self.var_atten_time.set("")
-#     self.var_atten_date.set("")
-#     self.var_atten_attendence.set("")
