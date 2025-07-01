@@ -67,7 +67,7 @@ class HelpDesk:
         Time()
 
         # HelpDesk Feature Buttons
-        btn_manual = self.create_button("sample images/manual2.jpg", "User Manual", self.unavailable, 0.15, 0.45)
+        btn_manual = self.create_button("sample images/manual2.jpg", "User Manual", self.show_user_manual, 0.15, 0.45)
         btn_FAQs = self.create_button("sample images/FAQ.png", "FAQs", self.show_faq_window, 0.385, 0.45)
         btn_about = self.create_button("sample images/about.png", "About", self.show_about_us, 0.62, 0.45)
         btn_chatbot = self.create_button("sample images/chatbot.jpeg", "ChatBot", self.not_ready, 0.855, 0.45)
@@ -96,11 +96,6 @@ class HelpDesk:
     def not_ready(self):
         messagebox.showinfo("Info", "This feature is under development.")
 
-    def unavailable(self):
-        msg = messagebox.askretrycancel("404 Error!", "Temporarily unavailable.\nPlease try again later.")
-        if msg:
-            self.unavailable()
-
 
     def home(self):
         from main import Face_Recognition_System
@@ -119,6 +114,64 @@ class HelpDesk:
         tk.Label(help_window, text="Email: support@faceattend.com", font=("Arial", 12),bg="#1c1c1c" ,fg="#ffffff").pack(pady=5)
         tk.Label(help_window, text="Phone: +91-98xxxxxx10", font=("Arial", 12),bg="#1c1c1c", fg="#ffffff").pack(pady=5)
         ttk.Button(help_window, text="Close", command=help_window.destroy).pack(pady=10)
+
+
+    def show_user_manual(self):
+        manual_win = tk.Toplevel(self.root)
+        manual_win.title("User Manual")
+        manual_win.geometry("510x500")
+        manual_win.configure(bg="#1c1c1c")
+        manual_win.resizable(False, False)
+
+        # Frame for Text + Scrollbar
+        text_frame = tk.Frame(manual_win, bg="#1c1c1c")
+        text_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        # Text widget
+        text_widget = tk.Text(text_frame, wrap="word", font=("Helvetica", 12),
+                            bg="#1c1c1c", fg="white", insertbackground="white", borderwidth=0)
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=text_widget.yview)
+        scrollbar.pack(side="right", fill="y")
+        text_widget.configure(yscrollcommand=scrollbar.set)
+
+        # Tag styles
+        text_widget.tag_configure("step", font=("Helvetica", 12, "bold"), foreground="#00ff00", spacing1=10)
+        text_widget.tag_configure("desc", font=("Helvetica", 12), foreground="white", lmargin1=20, lmargin2=20)
+
+        # Manual content
+        manual = [
+            ("Step 1: Create the MySQL Database",
+            "Open your MySQL client and create a database named 'face-recognition-attendance-system'. "
+            "Create a table named 'student' with columns: department, course, year, semester, S_ID, Name, batch, roll, gen, dob, email, phn, photo."),
+
+            ("Step 2: Add Student Details",
+            "Use the 'Student Details' section in the application to input and save new student records."),
+
+            ("Step 3: Capture Photo Samples",
+            "In the application, go to the photo capture section and take face samples using the webcam. "
+            "Images will be saved automatically in the 'face_img' directory."),
+
+            ("Step 4: Train Face Data",
+            "Once all samples are collected, go to the 'Train Face Data' button and start training. "
+            "This generates the 'classifier.xml' model used for recognition."),
+
+            ("Step 5: Open Face Recognition for Attendance",
+            "Start the face recognition module. When a trained face is detected, it is recognized and attendance is marked automatically."),
+
+            ("Step 6: Manage Attendance Records",
+            "Attendance is saved in 'Attendance.csv'. Use the Attendance Manager window to view, edit, or export records."),
+        ]
+
+        # Insert steps into text widget
+        for step, desc in manual:
+            text_widget.insert("end", step + "\n", "step")
+            text_widget.insert("end", desc + "\n\n", "desc")
+
+        text_widget.config(state="disabled")  # Make read-only
+
 
 
     def show_faq_window(self):
