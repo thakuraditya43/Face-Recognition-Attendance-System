@@ -103,14 +103,14 @@ class Face_Recognition_System:
 
         # Detect Face button
         btn_DetFace = self.create_button("sample images/FaceID-MainArt.jpg", 
-                                        "Face Detector",
+                                        "Face Attendance",
                                         self.detect_face, 0.385, 0.45)
         
 
 
         # Attendance button
         btn_Atten = self.create_button("sample images/attendance.png", 
-                                    "Attendance",
+                                    "Attendance Manager",
                                     self.atten_win, 0.62, 0.45)
         
 

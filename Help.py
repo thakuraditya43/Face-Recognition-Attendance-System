@@ -128,38 +128,64 @@ class HelpDesk:
         faq_win.configure(bg="#1c1c1c")
         faq_win.resizable(False, False)
 
-        # Scrollable Frame
-        canvas = tk.Canvas(faq_win, bg="white", borderwidth=0)
-        frame = tk.Frame(canvas, bg="#1c1c1c")
-        scrollbar = ttk.Scrollbar(faq_win, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scrollbar.set)
+        # Frame for Text + Scrollbar
+        text_frame = tk.Frame(faq_win, bg="#1c1c1c")
+        text_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
+        # Text widget
+        text_widget = tk.Text(text_frame, wrap="word", font=("Helvetica", 12),
+                            bg="#1c1c1c", fg="white", insertbackground="white", borderwidth=0)
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=text_widget.yview)
         scrollbar.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-        canvas.create_window((0, 0), window=frame, anchor="nw")
+        text_widget.configure(yscrollcommand=scrollbar.set)
 
-        def on_frame_config(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))
-        frame.bind("<Configure>", on_frame_config)
+        # Tag styles
+        text_widget.tag_configure("question", font=("Helvetica", 12, "bold"), foreground="#00ff00", spacing1=10)
+        text_widget.tag_configure("answer", font=("Helvetica", 12), foreground="white", lmargin1=20, lmargin2=20)
 
         # FAQ content
         faqs = [
-            ("1. What is this system?", "An automated system to mark attendance using facial recognition."),
-            ("2. How does it work?", "Detects, encodes, and compares face features with stored data."),
-            ("3. What libraries are used?", "OpenCV, face_recognition, Tkinter, PIL, etc."),
-            ("4. How accurate is it?", "Typically 90%–98% under good conditions."),
-            ("5. Is it secure?", "Fairly secure but can be improved with liveness detection."),
-            ("6. Can it recognize multiple faces?", "Yes, in a single frame."),
-            ("7. Where is attendance stored?", "CSV, Excel, or database like SQLite."),
-            ("8. Can new users be added?", "Yes, by adding their images and encoding their faces."),
-            ("9. Limitations?", "Sensitive to lighting, face angles, and image quality."),
-            ("10. Can it be extended?", "Yes, with cloud, SMS, mobile apps, etc."),
-        ]
+                ("1. What is this system?", 
+                "A smart attendance system that uses facial recognition to automatically identify and mark students' presence."),
 
-        # Add FAQs to the frame
+                ("2. How does face recognition work in this system?", 
+                "The system detects faces from a live camera feed, encodes facial features, and matches them against stored data to recognize individuals."),
+
+                ("3. What technologies or libraries are used?", 
+                "This system is built using OpenCV, Tkinter (for GUI), MySQL (for data storage), and PIL for image handling."),
+
+                ("4. How is face data trained and used?", 
+                "Captured face images are trained using the LBPH (Local Binary Patterns Histogram) algorithm to generate a model used for recognition."),
+
+                ("5. Is the system accurate?", 
+                "Yes, it performs with 80%–90% accuracy under good lighting and clear face visibility."),
+
+                ("6. Can it handle multiple faces at once?", 
+                "Yes, the system can detect and process multiple faces in a single camera frame."),
+
+                ("7. Where is the attendance data stored?", 
+                "Attendance is recorded in a CSV file and can also be stored in a MySQL database for better management and analysis."),
+
+                ("8. Can new students be added to the system?", 
+                "Yes, new users can be added by capturing their face images and training the recognition model."),
+
+                ("9. What are some limitations of the system?", 
+                "It may struggle with poor lighting, occluded faces, extreme angles, or low-resolution cameras."),
+
+                ("10. Can the system be improved or extended?", 
+                "Yes, it can be extended with features like liveness detection, cloud sync, mobile apps, and SMS/email notifications."),
+            ]
+
+
+        # Insert questions and answers with formatting
         for q, a in faqs:
-            tk.Label(frame, text=q, font=("Helvetica", 12, "bold"),bg="#1c1c1c", fg="white", anchor="w", justify="left").pack(fill="x", padx=20, pady=(10, 0))
-            tk.Label(frame, text="   " + a, font=("Helvetica", 12),bg="#1c1c1c", fg="white", anchor="w", justify="left", wraplength=650).pack(fill="x", padx=20)
+            text_widget.insert("end", q + "\n", "question")
+            text_widget.insert("end", a + "\n\n", "answer")
+
+        text_widget.config(state="disabled")  # Make read-only
 
 
     def show_about_us(self):

@@ -1,5 +1,11 @@
-IITP001,Aarsh,CSE,BSc,2,2,12-07-2025,12:30,Present
-IITP001,AKarsh Kumar,827,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,00:09:41,Present
-IITP001,AKarsh Kumar,827,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,00:10:39,Present
-IITP001,AKarsh Kumar,827,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,00:11:48,Present
-IITP001,AKarsh Kumar,827,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,00:13:22,Present
+S_ID,Name,Department,Course,Semester,Batch,Date,Time,Status
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:12:03,Late
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:13:24,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:14:53,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:31:42,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:33:37,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:34:31,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:35:14,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:36:31,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:37:41,Present
+IITP001,AKarsh Kumar,Computer Science,B.Sc.(Hons.):CSDA,2,2,2025-07-01,17:41:55,Present

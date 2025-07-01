@@ -102,7 +102,7 @@ class Attendance:
         left_frame=tk.LabelFrame(self.root,bd=3,bg="white",relief="ridge",text="Student Attendance Details",font=("Times New Roman",20,"bold"),labelanchor="n")
         left_frame.place(relx=0.25,rely=0.6,relwidth=0.469, relheight=0.65,anchor="center")
 
-        img_leftF = Image.open("sample images/black.png")
+        img_leftF = Image.open("sample images/Attendance.jpg")
         img_leftF = img_leftF.resize((580,130), Image.Resampling.LANCZOS)
         self.photo_leftF = ImageTk.PhotoImage(img_leftF)
 
@@ -291,10 +291,10 @@ class Attendance:
 
         self.AttendanceReport_Table.column("id",width=100)
         self.AttendanceReport_Table.column("name",width=100)
-        self.AttendanceReport_Table.column("dep",width=100)
-        self.AttendanceReport_Table.column("course",width=100)
-        self.AttendanceReport_Table.column("sem",width=100)
-        self.AttendanceReport_Table.column("batch",width=100)
+        self.AttendanceReport_Table.column("dep",width=150)
+        self.AttendanceReport_Table.column("course",width=150)
+        self.AttendanceReport_Table.column("sem",width=75)
+        self.AttendanceReport_Table.column("batch",width=75)
         self.AttendanceReport_Table.column("date",width=100)
         self.AttendanceReport_Table.column("time",width=100)
         self.AttendanceReport_Table.column("atten",width=100)
@@ -365,7 +365,6 @@ class Attendance:
         self.attendance_var.set(rows[8])
 
 
-    # Update selected student data and save to a new CSV
     def update_data(self):
         updated = False
         for index, row in enumerate(mydata):
@@ -379,17 +378,9 @@ class Attendance:
                 break
         if updated:
             self.fetchData(mydata)
-            try:
-                fln = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Save Updated CSV", filetypes=[("CSV File", "*.csv")], defaultextension=".csv", parent=self.root)
-                if fln:
-                    with open(fln, mode="w", newline="") as f:
-                        writer = csv.writer(f)
-                        writer.writerows(mydata)
-                    messagebox.showinfo("Update Successful", "Attendance record has been updated and saved successfully.", parent=self.root)
-            except Exception as e:
-                messagebox.showerror("Update Failed", f"Unable to updated file.\nReason: {str(e)}", parent=self.root)
+            messagebox.showinfo("Update Successful", "Attendance record has been updated successfully.", parent=self.root)
         else:
-            messagebox.showerror("Update Failed", "No matching Student ID found in the file.", parent=self.root)
+            messagebox.showerror("Update Failed", "No matching Student ID found in the data.", parent=self.root)
 
 
     # Clear all entry fields in the attendance form

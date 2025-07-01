@@ -134,56 +134,87 @@ class DeveloperDetail:
     def show_team_info(self):
         top = tk.Toplevel(self.root)
         top.title("Team Members")
-        top.geometry("875x765")
+        top.geometry("550x700")
         top.configure(bg="#1c1c1c")
         top.resizable(False, False)
 
         tk.Label(top, text="Development Team", font=("Times New Roman", 22, "bold"), bg="#1c1c1c", fg="#00ff00").pack(pady=8)
+
+            # Frame to hold Text and Scrollbar
+        text_frame = tk.Frame(top, bg="#1c1c1c")
+        text_frame.pack(fill="both", expand=True, padx=20, pady=10)
+
+        # Text widget with vertical scrollbar
+        text_widget = tk.Text(text_frame, wrap="word", font=("Calibri", 14),
+                                bg="#1c1c1c", fg="#ffffff", insertbackground="white", borderwidth=0)
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=text_widget.yview)
+        scrollbar.pack(side="right", fill="y")
+
+        text_widget.configure(yscrollcommand=scrollbar.set)
 
         team_details = [
             {
                 "name": "Akarsh Kumar",
                 "email": "akarsh_24a12res827@iitp.ac.in",
                 "work": (
-                    "- Designed and implemented the entire graphical user interface (GUI) using Tkinter, ensuring user-friendly interaction and intuitive navigation.\n"
-                    "- Developed approximately 50% of the face recognition functionality using OpenCV, including detection and real-time recognition logic.\n"
-                    "- Integrated all project modules (face recognition, database, attendance management, help sections, etc.) into a seamless and fully functional application.\n"
-                    "- Maintains the GitHub repository by managing commits, handling code versioning, and documenting the overall project structure."
-                )
-            },
-            {
-                "name": "Aditya Kumar",
-                "email": "aditya_24a12res813@iitp.ac.in",
-                "work": (
-                    "- Created multiple additional utility windows like FAQs, About Us, Contact Information, and Team Info, enhancing the overall project completeness.\n"
-                    "- Contributed significantly to face recognition components such as image capturing and face encoding using OpenCV (around 50%).\n"
-                    "- Suggested improvements for UI/UX and provided extensive feedback during testing and debugging phases.\n"
-                    "- Collaborated with the team to refine the interface layout and improve user experience across different modules."
+                    "    - Designed and implemented the entire graphical user interface (GUI) using Tkinter, ensuring user-friendly interaction and intuitive navigation.\n"
+                    "    - Developed the face data training module using OpenCV to process captured images for recognition.\n"
+                    "    - Write code to record attendance during face recognition, storing data in a CSV file while preventing duplicate entries for the same student on the same day.\n"
+                    "    - Integrated all project modules (face recognition, database, attendance management, help sections, etc.) into a seamless and fully functional application.\n"
+                    "    - Maintains the GitHub repository by managing commits, handling code versioning, and documenting the overall project structure."
                 )
             },
             {
                 "name": "Aditya Kumar",
                 "email": "aditya_24a12res1174@iitp.ac.in",
                 "work": (
-                    "- Led the backend development of the project by setting up and integrating MySQL for reliable attendance data storage and retrieval.\n"
-                    "- Managed the face data encoding and linking with database records, ensuring accuracy in student recognition and logging.\n"
-                    "- Provided valuable insights and technical suggestions for module implementation and application flow.\n"
-                    "- Actively participated in team coordination, contributing to effective planning, feature integration, and module-level testing."
+                    "    - Led the backend development of the project by setting up and integrating MySQL for reliable attendance data storage and retrieval.\n"
+                    "    - Managed the face data encoding and linking with database records, ensuring accuracy in student recognition and logging.\n"
+                    "    - Develop a Python script to handle importing, exporting, and updating records in a CSV file.\n"
+                    "    - Provided valuable insights and technical suggestions for module implementation and application flow.\n"
+                    "    - Actively participated in team coordination, contributing to effective planning, feature integration, and module-level testing."
                 )
             },
+            {
+                "name": "Aditya Kumar",
+                "email": "aditya_24a12res813@iitp.ac.in",
+                "work": (
+                    "    - Created multiple additional utility windows like FAQs, About Us, Contact Information, and Team Info, enhancing the overall project completeness.\n"
+                    "    - Developed face capturing and image saving logic using OpenCV for recognition processing.\n"
+                    "    - Suggested improvements for UI/UX and provided extensive feedback during testing and debugging phases.\n"
+                    "    - Collaborated with the team to refine the interface layout and improve user experience across different modules."
+                )
+            },
+            {
+                "name": "Aditya Kumar",
+                "email": "aditya_24a12res814@iitp.ac.in",
+                "work": (
+                    "    - Implemented face recognition with OpenCV: drew bounding boxes, displayed student details on match, and labeled unknown if unmatched."
+                )
+            },
+            {
+                "name": "Akash Kumar",
+                "email": "akash_24a12res829@iitp.ac.in",
+                "work":(
+                    "    - Nothing"
+                )
+            }
         ]
-            # {"name": "Aditya Kumar", "email": "aditya_24a12res814@iitp.ac.in"},
-            # {"name": "Akash Kumar", "email": "akash_24a12res829@iitp.ac.in"},
+            
 
+        # Define font tags for name/email and work
+        text_widget.tag_configure("name_tag", font=("Calibri", 16, "bold"), foreground="#00ff00",justify="center")
+        text_widget.tag_configure("work_tag", font=("Calibri", 14), foreground="#ffffff",justify="left")
+
+        # Insert team info with different fonts
         for idx, member in enumerate(team_details, start=1):
-            frame = tk.Frame(top, bg="#1c1c1c")
-            frame.pack(fill="x", padx=10, pady=5, anchor="w")
+            text_widget.insert("end", f"{idx}. {member['name']} — {member['email']}\n", "name_tag")
+            text_widget.insert("end", f"{member['work']}\n\n", "work_tag")
 
-            tk.Label(frame, text=f"{idx}. {member['name']} — {member['email']}", font=("Calibri", 16, "bold"),
-                    bg="#1c1c1c", fg="#00ff00", anchor="w", justify="left").pack(anchor="w")
-
-            tk.Label(frame, text=member["work"], font=("Calibri", 14), bg="#1c1c1c", fg="#ffffff",
-                    anchor="w", justify="left", wraplength=825).pack(anchor="w", padx=10)
+        # Disable editing
+        text_widget.config(state="disabled")
 
         ttk.Button(top, text="Close", command=top.destroy).pack(pady=8)
 
